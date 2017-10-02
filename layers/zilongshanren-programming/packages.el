@@ -29,6 +29,7 @@
         yasnippet
         web-mode
         js-doc
+        go-mode
         lua-mode
         (cc-mode :location built-in)
         ;; flycheck-clojure
@@ -41,6 +42,7 @@
         dumb-jump
         graphviz-dot-mode
         cider
+        toml-mode
         ;; editorconfig
         robe
         ))
@@ -126,6 +128,14 @@
   (add-hook 'python-mode-hook #'(lambda () (modify-syntax-entry ?_ "w")))
   ;; if you use pyton3, then you could comment the following line
   (setq python-shell-interpreter "python"))
+
+(defun zilongshanren-programming/post-init-go()
+  (add-hook 'before-save-hook 'gofmt-before-save)
+   (add-hook 'go-mode-hook
+          (lambda ()
+            (set (make-local-variable 'company-backends) '(company-go))
+            (company-mode)))
+)
 
 (defun zilongshanren-programming/post-init-js-doc ()
   (setq js-doc-mail-address "guanghui8827@gmail.com"
@@ -461,7 +471,7 @@
   (progn
     (setq ycmd-tag-files 'auto)
     (setq ycmd-request-message-level -1)
-    (set-variable 'ycmd-server-command `("python" ,(expand-file-name "~/Github/ycmd/ycmd/__main__.py")))
+    (set-variable 'ycmd-server-command `("python" ,(expand-file-name "~/.vim/bundle/YouCompleteMe/third_party/ycmd/ycmd/__main__.py")))
     (setq company-backends-c-mode-common '((company-c-headers
                                             company-dabbrev-code
                                             company-keywords
@@ -527,7 +537,7 @@
           company-idle-delay 0.08)
 
     (when (configuration-layer/package-usedp 'company)
-      (spacemacs|add-company-backends :modes shell-script-mode makefile-bsdmake-mode sh-mode lua-mode nxml-mode conf-unix-mode json-mode graphviz-dot-mode))
+      (spacemacs|add-company-backends :modes shell-script-mode makefile-bsdmake-mode sh-mode lua-mode nxml-mode conf-unix-mode json-mode graphviz-dot-mode go-mode))
     ))
 (defun zilongshanren-programming/post-init-company-c-headers ()
   (progn

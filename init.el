@@ -60,7 +60,7 @@ values."
      restclient
      (gtags :disabled-for clojure emacs-lisp javascript latex python shell-scripts)
      (shell :variables shell-default-shell 'eshell)
-     ;; docker
+     docker
      latex
      deft
      markdown
@@ -69,7 +69,10 @@ values."
      yaml
      react
      (python :variables
+             python-enable-yapf-format-on-save t
              python-test-runner '(nose pytest))
+
+     (go :variables gofmt-command "goimports")
      ;; (ruby :variables ruby-version-manager 'chruby)
      ;; ruby-on-rails
      lua
@@ -92,7 +95,7 @@ values."
    ;; wrapped in a layer. If you need some configuration for these
    ;; packages, then consider creating a layer. You can also put the
    ;; configuration in `dotspacemacs/user-config'.
-   dotspacemacs-additional-packages '(sicp)
+   ;dotspacemacs-additional-packages '(sicp)
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
    dotspacemacs-excluded-packages
@@ -174,8 +177,8 @@ values."
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
-   dotspacemacs-themes '(solarized-light
-                         solarized-dark)
+   ;dotspacemacs-themes '(solarized-light
+   ;                      solarized-dark)
    ;; If non nil the cursor color matches the state color in GUI Emacs.
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
@@ -341,6 +344,7 @@ values."
   (setq configuration-layer--elpa-archives
         '(("melpa-cn" . "https://elpa.emacs-china.org/melpa/")
           ("org-cn"   . "https://elpa.emacs-china.org/org/")
+          ("marmalade"   . "http://marmalade-repo.org/packages/")
           ("gnu-cn"   . "https://elpa.emacs-china.org/gnu/")))
 
   ;; https://github.com/syl20bnr/spacemacs/issues/2705
@@ -358,6 +362,18 @@ values."
   )
 
 (defun dotspacemacs/user-config ()
+  (eval-after-load 'tramp '(setenv "SHELL" "/bin/bash"))
+  ;(global-company-mode t)
+  ;(setq debug-on-error t)
+
+  (setq ns-use-srgb-colorspace nil)
+  (setq powerline-default-separator 'utf-8)
+
+  (global-hl-line-mode 1)
+  (unless (display-graphic-p)
+    (setq linum-format (concat linum-format " "))
+    (setq linum-relative-format (concat linum-relative-format " "))
+    )
   ;;解决org表格里面中英文对齐的问题
   (when (configuration-layer/layer-usedp 'chinese)
     (when (and (spacemacs/system-is-mac) window-system)
@@ -377,7 +393,7 @@ values."
 
   ;; force horizontal split window
   (setq split-width-threshold 120)
-  (linum-relative-on)
+  ;(linum-relative-on)
 
   (spacemacs|add-company-backends :modes text-mode)
 
