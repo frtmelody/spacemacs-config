@@ -47,6 +47,7 @@
         robe
         ))
 
+(add-hook 'prog-mode-hook 'spacemacs/toggle-syntax-checking-on)
 (defun zilongshanren-programming/post-init-robe ()
   (progn
     (add-hook 'inf-ruby-mode-hook 'spacemacs/toggle-auto-completion-on)
@@ -86,6 +87,7 @@
                  (locate-dominating-file default-directory ".editorconfig"))
             (editorconfig-apply)))
       (add-hook 'prog-mode-hook 'conditional-enable-editorconfig))))
+
 
 (defun zilongshanren-programming/post-init-cider ()
   (setq cider-cljs-lein-repl
@@ -129,12 +131,13 @@
   ;; if you use pyton3, then you could comment the following line
   (setq python-shell-interpreter "python"))
 
-(defun zilongshanren-programming/post-init-go()
+(defun zilongshanren-programming/post-init-go-mode ()
   (add-hook 'before-save-hook 'gofmt-before-save)
    (add-hook 'go-mode-hook
           (lambda ()
             (set (make-local-variable 'company-backends) '(company-go))
-            (company-mode)))
+            (company-mode)
+            ))
 )
 
 (defun zilongshanren-programming/post-init-js-doc ()
@@ -459,6 +462,13 @@
     (with-eval-after-load 'c++-mode
       (define-key c++-mode-map (kbd "s-.") 'company-ycmd)))
 
+  )
+
+(defun zilongshanren-programming/init-toml-mode ()
+  (use-package toml-mode
+    :defer t
+    :init)
+  (add-to-list 'auto-mode-alist '("\\.toml\\'" . toml-mode))
   )
 
 (defun zilongshanren-programming/init-flycheck-clojure ()

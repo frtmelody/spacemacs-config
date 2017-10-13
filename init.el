@@ -32,7 +32,9 @@ values."
    dotspacemacs-configuration-layers
    '(
      ivy
-     better-defaults
+     (better-defaults :variables
+      better-defaults-move-to-beginning-of-code-first t
+      better-defaults-move-to-end-of-code-first nil)
      ranger
      colors
      prodigy
@@ -64,6 +66,9 @@ values."
      latex
      deft
      markdown
+     ;; (treemacs :variables
+     ;;  treemacs-use-follow-mode t
+     ;;  treemacs-use-filewatch-mode t)
      (org :variables org-want-todo-bindings t)
      gpu
      yaml
@@ -79,8 +84,8 @@ values."
      html
      javascript
      (typescript :variables
-                typescript-fmt-on-save nil
-                typescript-fmt-tool 'typescript-formatter)
+                 typescript-fmt-on-save nil
+                 typescript-fmt-tool 'typescript-formatter)
      emacs-lisp
      (clojure :variables clojure-enable-fancify-symbols t)
      racket
@@ -89,8 +94,7 @@ values."
      zilongshanren
      (chinese :packages youdao-dictionary fcitx
               :variables chinese-enable-fcitx nil
-              chinese-enable-youdao-dict t)
-     )
+              chinese-enable-youdao-dict t))
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
    ;; packages, then consider creating a layer. You can also put the
@@ -114,7 +118,8 @@ values."
                     helm-c-yasnippet ace-jump-helm-line helm-make magithub
                     helm-themes helm-swoop helm-spacemacs-help smeargle
                     ido-vertical-mode flx-ido company-quickhelp counsel-projectile
-                    window-purpose ivy-purpose helm-purpose spacemacs-purpose-popwin
+                    ;; window-purpose spacemacs-purpose-popwin
+                    ;; ivy-purpose helm-purpose
                     )
    dotspacemacs-install-packages 'used-only
    dotspacemacs-delete-orphan-packages t))

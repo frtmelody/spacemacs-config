@@ -43,7 +43,6 @@
 
 (add-to-list 'auto-mode-alist '("\\.mm\\'" . objc-mode))
 (add-to-list 'auto-mode-alist '("\\.c\\'" . c++-mode))
-(add-to-list 'auto-mode-alist '("\\.toml\\'" . toml-mode))
 
 
 

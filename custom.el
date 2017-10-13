@@ -11,6 +11,7 @@
  '(company-dabbrev-other-buffers nil)
  '(company-show-numbers t)
  '(company-statistics-auto-restore nil)
+ '(counsel-locate-cmd (quote counsel-locate-cmd-mdfind))
  '(ctags-update-delay-seconds 1024)
  '(erc-nick "FrtMeLody")
  '(erc-port 6666)
