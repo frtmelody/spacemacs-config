@@ -97,6 +97,9 @@
   "]s" (lambda (n) (interactive "p")
          (forward-char) (dotimes (c n nil) (insert " ")) (backward-char (1+ n))))
 
+(spacemacs/set-leader-keys "bt" 'zilongshanren/open-terminal-in-current-dir)
+(spacemacs/set-leader-keys "bT" 'zilongshanren/open-markdown-in-typora)
+
 (with-eval-after-load 'company
   (progn
     (bb/define-key company-active-map

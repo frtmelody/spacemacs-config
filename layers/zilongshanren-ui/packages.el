@@ -14,6 +14,7 @@
     (zilong-mode-line :location built-in)
     diminish
     popwin
+    doom-themes
     (whitespace :location built-in)
     ;; hl-anything performance is very slow...
     ;; hl-anything
@@ -23,6 +24,13 @@
     ;; evil-vimish-fold
     )
   )
+
+(defun zilongshanren-ui/init-doom-themes ()
+  (use-package doom-themes
+    :init
+    (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
+          doom-themes-enable-italic t) ; if nil, italics is universally disabled
+    ))
 
 (defun zilongshanren-ui/init-zilong-mode-line ()
   (defun zilongshanren/display-mode-indent-width ()

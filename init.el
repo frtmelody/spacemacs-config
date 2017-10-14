@@ -82,6 +82,7 @@ values."
      ;; ruby-on-rails
      lua
      html
+     rust
      javascript
      (typescript :variables
                  typescript-fmt-on-save nil
@@ -103,24 +104,25 @@ values."
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
    dotspacemacs-excluded-packages
-   '(magit-gh-pulls magit-gitflow org-projectile evil-mc realgud
-                    evil-args evil-ediff evil-exchange evil-unimpaired
-                    evil-indent-plus volatile-highlights smartparens
-                    spaceline holy-mode skewer-mode rainbow-delimiters
-                    highlight-indentation vi-tilde-fringe eyebrowse
-                    org-bullets smooth-scrolling org-repo-todo org-download org-timer
-                    livid-mode git-gutter git-gutter-fringe  evil-escape
-                    leuven-theme gh-md evil-lisp-state spray lorem-ipsum symon
-                    ac-ispell ace-jump-mode auto-complete auto-dictionary
-                    clang-format define-word google-translate disaster epic
-                    fancy-battery org-present orgit orglue spacemacs-theme
-                    helm-flyspell flyspell-correct-helm clean-aindent-mode
-                    helm-c-yasnippet ace-jump-helm-line helm-make magithub
-                    helm-themes helm-swoop helm-spacemacs-help smeargle
-                    ido-vertical-mode flx-ido company-quickhelp counsel-projectile
-                    ;; window-purpose spacemacs-purpose-popwin
-                    ;; ivy-purpose helm-purpose
-                    )
+   '(
+     magit-gh-pulls magit-gitflow org-projectile evil-mc realgud
+     evil-args evil-ediff evil-exchange evil-unimpaired
+     evil-indent-plus volatile-highlights smartparens
+     spaceline holy-mode skewer-mode rainbow-delimiters
+     highlight-indentation vi-tilde-fringe eyebrowse
+     org-bullets smooth-scrolling org-repo-todo org-download org-timer
+     livid-mode git-gutter git-gutter-fringe  evil-escape
+     leuven-theme gh-md evil-lisp-state spray lorem-ipsum symon
+     ac-ispell ace-jump-mode auto-complete auto-dictionary
+     clang-format define-word google-translate disaster epic
+     fancy-battery org-present orgit orglue spacemacs-theme
+     helm-flyspell flyspell-correct-helm clean-aindent-mode
+     helm-c-yasnippet ace-jump-helm-line helm-make magithub
+     helm-themes helm-swoop helm-spacemacs-help smeargle
+     ido-vertical-mode flx-ido company-quickhelp counsel-projectile
+     window-purpose spacemacs-purpose-popwin
+     ivy-purpose helm-purpose
+     )
    dotspacemacs-install-packages 'used-only
    dotspacemacs-delete-orphan-packages t))
 
@@ -182,6 +184,8 @@ values."
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
+   dotspacemacs-themes '(doom-one
+                         doom-one-light)
    ;dotspacemacs-themes '(solarized-light
    ;                      solarized-dark)
    ;; If non nil the cursor color matches the state color in GUI Emacs.

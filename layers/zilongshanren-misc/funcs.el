@@ -605,3 +605,27 @@ Error out if this isn't a GitHub repo."
   (interactive)
   (counsel-imenu)
   (evil-set-jump))
+
+(defun zilongshanren/open-markdown-in-typora ()
+  (interactive)
+  (cond
+   ((string-equal system-type "darwin")
+    (shell-command (concat "open -a Typora '" buffer-file-name "'")))
+   ((string-equal system-type "gnu/linux")
+    (let ((process-connection-type nil))
+      (start-process "" nil "typora" (concat  "'" buffer-file-name "'"))))
+   ))
+
+
+(defun zilongshanren/open-terminal-in-current-dir ()
+  (interactive)
+  (cond
+   ((string-equal system-type "darwin") (shell-command "open -a iTerm ."))
+   ((string-equal system-type "gnu/linux")
+    (let (
+          (process-connection-type nil)
+          (openFileProgram (if (file-exists-p "/usr/bin/konsole")
+                               "/usr/bin/konsole"
+                             "/usr/bin/gnome-terminal")))
+      (start-process "" nil openFileProgram ".")))
+   ))
