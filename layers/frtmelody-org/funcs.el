@@ -1,9 +1,9 @@
-;;; funcs.el --- zilongshanren Layer packages File for Spacemacs
+;;; funcs.el --- frtmelody Layer packages File for Spacemacs
 ;;
-;; Copyright (c) 2015-2016 zilongshanren 
+;; Copyright (c) 2015-2016 frtmelody 
 ;;
-;; Author: zilongshanren <guanghui8827@gmail.com>
-;; URL: https://github.com/zilongshanren/spacemacs-private
+;; Author: frtmelody <guanghui8827@gmail.com>
+;; URL: https://github.com/frtmelody/spacemacs-private
 ;;
 ;; This file is not part of GNU Emacs.
 ;;
@@ -12,51 +12,51 @@
 
 (setq octopress-workdir (expand-file-name "~/4gamers.cn/"))
 
-(defun zilongshanren/octopress-rake (command)
+(defun frtmelody/octopress-rake (command)
   "run rake commands"
   (let ((command-str (format "/bin/bash -l -c 'source $HOME/.rvm/scripts/rvm && rvm use ruby 2.0.0  && cd %s && rake %s'" octopress-workdir command)))
     (shell-command-to-string command-str)))
 
-(defun zilongshanren/octopress-qrsync (command)
+(defun frtmelody/octopress-qrsync (command)
   (let ((command-str (format "/usr/local/bin/qrsync %s" command )))
     (shell-command-to-string command-str)))
 
-(defun zilongshanren/octopress-generate ()
+(defun frtmelody/octopress-generate ()
   "generate jekyll site"
   (interactive)
-  (zilongshanren/octopress-rake "generate")
+  (frtmelody/octopress-rake "generate")
   (message "Generate site OK"))
 
-(defun zilongshanren/octopress-deploy ()
+(defun frtmelody/octopress-deploy ()
   "default deploy task"
   (interactive)
-  (zilongshanren/octopress-rake "deploy")
-  (zilongshanren/octopress-qrsync "/Users/guanghui/4gamers.cn/guanghui.json")
+  (frtmelody/octopress-rake "deploy")
+  (frtmelody/octopress-qrsync "/Users/guanghui/4gamers.cn/guanghui.json")
   (message "Deploy site OK"))
 
-(defun zilongshanren/octopress-gen-deploy ()
+(defun frtmelody/octopress-gen-deploy ()
   "generate website and deploy"
   (interactive)
-  (zilongshanren/octopress-rake "gen_deploy")
-  (zilongshanren/octopress-qrsync "/Users/guanghui/4gamers.cn/guanghui.json")
+  (frtmelody/octopress-rake "gen_deploy")
+  (frtmelody/octopress-qrsync "/Users/guanghui/4gamers.cn/guanghui.json")
   (message "Generate and Deploy OK"))
 
-(defun zilongshanren/octopress-upimg ()
+(defun frtmelody/octopress-upimg ()
   (interactive)
-  (zilongshanren/octopress-qrsync "/Users/guanghui/4gamers.cn/guanghui.json")
+  (frtmelody/octopress-qrsync "/Users/guanghui/4gamers.cn/guanghui.json")
   (message "Up Img to Qiniu"))
 
-(defun zilongshanren/directory-parent (directory)
+(defun frtmelody/directory-parent (directory)
   (let ((parent (file-name-directory (directory-file-name directory))))
     (if (not (equal directory parent))
         parent)))
 
-(defun zilongshanren/jekyll-serve ()
+(defun frtmelody/jekyll-serve ()
   (interactive)
   (let* ((default-directory
            (if (string-match "_posts/$" default-directory)
-               (zilongshanren/directory-parent (zilongshanren/directory-parent default-directory))
-             (zilongshanren/directory-parent default-directory)))
+               (frtmelody/directory-parent (frtmelody/directory-parent default-directory))
+             (frtmelody/directory-parent default-directory)))
          (buffer (if (get-buffer "*jekyll*")
                      (switch-to-buffer "*jekyll*")
                    (ansi-term "/bin/zsh" "jekyll")))
@@ -67,12 +67,12 @@
 
 
 ;; Screenshot
-(defun zilongshanren//insert-org-or-md-img-link (prefix imagename)
+(defun frtmelody//insert-org-or-md-img-link (prefix imagename)
   (if (equal (file-name-extension (buffer-file-name)) "org")
       (insert (format "[[%s%s]]" prefix imagename))
     (insert (format "![%s](%s%s)" imagename prefix imagename))))
 
-(defun zilongshanren/capture-screenshot (basename)
+(defun frtmelody/capture-screenshot (basename)
   "Take a screenshot into a time stamped unique-named file in the
   same directory as the org-buffer/markdown-buffer and insert a link to this file."
   (interactive "sScreenshot name: ")
@@ -97,13 +97,13 @@
             (progn
               (setq resize-command-str (format "convert %s -resize 800x600 %s" final-image-full-path final-image-full-path))
               (shell-command-to-string resize-command-str)))
-        (zilongshanren//insert-org-or-md-img-link "../img/" relativepath))
+        (frtmelody//insert-org-or-md-img-link "../img/" relativepath))
     (progn
       (call-process "screencapture" nil nil nil "-s" (concat basename ".png"))
-      (zilongshanren//insert-org-or-md-img-link "./" (concat basename ".png"))))
+      (frtmelody//insert-org-or-md-img-link "./" (concat basename ".png"))))
   (insert "\n"))
 
-(defun zilongshanren/org-archive-done-tasks ()
+(defun frtmelody/org-archive-done-tasks ()
   (interactive)
   (org-map-entries
    (lambda ()
@@ -111,7 +111,7 @@
      (setq org-map-continue-from (outline-previous-heading)))
    "/DONE" 'file))
 
-(defun zilongshanren/org-archive-cancel-tasks ()
+(defun frtmelody/org-archive-cancel-tasks ()
   (interactive)
   (org-map-entries
    (lambda ()
@@ -120,7 +120,7 @@
    "/CANCELLED" 'file))
 
 ;; "https://github.com/vhallac/.emacs.d/blob/master/config/customize-org-agenda.el"
-(defun zilongshanren/skip-non-stuck-projects ()
+(defun frtmelody/skip-non-stuck-projects ()
   "Skip trees that are not stuck projects"
   (bh/list-sublevels-for-projects-indented)
   (save-restriction
@@ -142,7 +142,7 @@
               nil)) ; a stuck project, has subtasks but no next task
         next-headline))))
 
-(defun zilongshanren/org-insert-src-block (src-code-type)
+(defun frtmelody/org-insert-src-block (src-code-type)
   "Insert a `SRC-CODE-TYPE' type source code block in org-mode."
   (interactive
    (let ((src-code-types
@@ -187,16 +187,16 @@
     (org-reset-subtask-state-maybe)
     (org-update-statistics-cookies t)))
 
-(defun zilong/org-summary-todo (n-done n-not-done)
+(defun frtmelody/org-summary-todo (n-done n-not-done)
   "Switch entry to DONE when all subentries are done, to TODO otherwise."
   (let (org-log-done org-log-states)    ; turn off logging
     (org-todo (if (= n-not-done 0) "DONE" "TODO"))))
 
-(defun zilong/filter-by-tags ()
+(defun frtmelody/filter-by-tags ()
   (let ((head-tags (org-get-tags-at)))
     (member current-tag head-tags)))
 
-(defun zilong/org-clock-sum-today-by-tags (timerange &optional tstart tend noinsert)
+(defun frtmelody/org-clock-sum-today-by-tags (timerange &optional tstart tend noinsert)
   (interactive "P")
   (let* ((timerange-numeric-value (prefix-numeric-value timerange))
          (files (org-add-archive-files (org-agenda-files)))
@@ -218,7 +218,7 @@
                                 (error "No such file %s" file)))
       (with-current-buffer org-agenda-buffer
         (dolist (current-tag include-tags)
-          (org-clock-sum tstart tend 'zilong/filter-by-tags)
+          (org-clock-sum tstart tend 'frtmelody/filter-by-tags)
           (setcdr (assoc current-tag tags-time-alist)
                   (+ org-clock-file-total-minutes (cdr (assoc current-tag tags-time-alist)))))))
     (while (setq item (pop tags-time-alist))

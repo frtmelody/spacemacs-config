@@ -10,9 +10,9 @@
 ;;; License: GPLv3
 
 (configuration-layer/declare-layers '(
-                                      zilongshanren-misc
-                                      zilongshanren-programming
-                                      zilongshanren-ui
-                                      zilongshanren-org
-                                      zilongshanren-better-defaults
+                                      frtmelody-misc
+                                      frtmelody-programming
+                                      frtmelody-ui
+                                      frtmelody-org
+                                      frtmelody-better-defaults
                                       ))

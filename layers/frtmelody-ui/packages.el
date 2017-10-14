@@ -1,39 +1,39 @@
-;;; packages.el --- zilong-ui layer packages file for Spacemacs.
+;;; packages.el --- frtmelody-ui layer packages file for Spacemacs.
 ;;
-;; Copyright (c) 2014-2016 zilongshanren
+;; Copyright (c) 2014-2016 frtmelody
 ;;
 ;; Author: guanghui <guanghui8827@gmail.com>
-;; URL: https://github.com/zilongshanren/spacemacs-private
+;; URL: https://github.com/frtmelody/spacemacs-private
 ;;
 ;; This file is not part of GNU Emacs.
 ;;
 ;;; License: GPLv3
 
-(defconst zilongshanren-ui-packages
+(defconst frtmelody-ui-packages
   '(
-    (zilong-mode-line :location built-in)
+    (frtmelody-mode-line :location built-in)
     diminish
     popwin
     doom-themes
     (whitespace :location built-in)
     ;; hl-anything performance is very slow...
     ;; hl-anything
-    ;; if you wnat to use spaceline, please comment out zilong-mode-line
+    ;; if you wnat to use spaceline, please comment out frtmelody-mode-line
     ;; spaceline
     ;; beacon
     ;; evil-vimish-fold
     )
   )
 
-(defun zilongshanren-ui/init-doom-themes ()
+(defun frtmelody-ui/init-doom-themes ()
   (use-package doom-themes
     :init
     (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
           doom-themes-enable-italic t) ; if nil, italics is universally disabled
     ))
 
-(defun zilongshanren-ui/init-zilong-mode-line ()
-  (defun zilongshanren/display-mode-indent-width ()
+(defun frtmelody-ui/init-frtmelody-mode-line ()
+  (defun frtmelody/display-mode-indent-width ()
     (let ((mode-indent-level
            (catch 'break
              (dolist (test spacemacs--indent-variable-alist)
@@ -82,7 +82,7 @@
                           'face
                           'font-lock-type-face))
                  " "
-                 '(:eval (zilongshanren/update-persp-name))
+                 '(:eval (frtmelody/update-persp-name))
 
                  "%1 "
                  ;; the buffer name; the file name as a tool tip
@@ -147,7 +147,7 @@
 
                  (mode-line-fill 'mode-line 20)
 
-                 '(:eval (zilongshanren/display-mode-indent-width))
+                 '(:eval (frtmelody/display-mode-indent-width))
                  ;; line and column
                  " (" ;; '%02' to set to 2 chars at least; prevents flickering
                  (propertize "%02l" 'face 'font-lock-type-face) ","
@@ -164,7 +164,7 @@
                  ;;                             (emacs-uptime "Uptime:%hh"))))
                  )))
 
-(defun zilongshanren-ui/post-init-diminish ()
+(defun frtmelody-ui/post-init-diminish ()
   (progn
     (with-eval-after-load 'whitespace
       (diminish 'whitespace-mode))
@@ -176,7 +176,7 @@
       (diminish 'hungry-delete-mode))))
 
 
-(defun zilongshanren-ui/post-init-spaceline ()
+(defun frtmelody-ui/post-init-spaceline ()
   (use-package spaceline-config
     :config
     (progn
@@ -196,7 +196,7 @@ This segment overrides the modeline functionality of `org-mode-line-string'."
                                 :global-override org-mode-line-string)
 
       (spaceline-compile
-       'zilong
+       'frtmelody
        ;; Left side of the mode line (all the important stuff)
        '(((persp-name
            workspace-number
@@ -221,10 +221,10 @@ This segment overrides the modeline functionality of `org-mode-line-string'."
        '((version-control :when active)
          battery))
 
-      (setq-default mode-line-format '("%e" (:eval (spaceline-ml-zilong))))
+      (setq-default mode-line-format '("%e" (:eval (spaceline-ml-frtmelody))))
       )))
 
-(defun zilongshanren-ui/init-beacon ()
+(defun frtmelody-ui/init-beacon ()
   (use-package beacon
     :init
     (progn
@@ -238,7 +238,7 @@ This segment overrides the modeline functionality of `org-mode-line-string'."
       (spacemacs/toggle-beacon-on))
     :config (spacemacs|hide-lighter beacon-mode)))
 
-(defun zilongshanren-ui/init-evil-vimish-fold ()
+(defun frtmelody-ui/init-evil-vimish-fold ()
   (use-package evil-vimish-fold
     :init
     (vimish-fold-global-mode 1)
@@ -249,7 +249,7 @@ This segment overrides the modeline functionality of `org-mode-line-string'."
       (define-key evil-normal-state-map (kbd "zd") 'vimish-fold-delete)
       (define-key evil-normal-state-map (kbd "za") 'vimish-fold-toggle))))
 
-(defun zilongshanren-ui/post-init-hl-anything ()
+(defun frtmelody-ui/post-init-hl-anything ()
   (progn
     (defun my-inhibit-globalized-hl-highlight-mode ()
       "Counter-act a globalized hl-highlight-mode."
@@ -264,7 +264,7 @@ This segment overrides the modeline functionality of `org-mode-line-string'."
       :documentation "Toggle highlight anything mode."
       :evil-leader "ths")))
 
-(defun zilongshanren-ui/post-init-pangu-spacing ()
+(defun frtmelody-ui/post-init-pangu-spacing ()
   (progn
     ;; add toggle options
     (spacemacs|add-toggle toggle-pangu-spaceing
@@ -277,12 +277,12 @@ This segment overrides the modeline functionality of `org-mode-line-string'."
               #'(lambda ()
                  (set (make-local-variable 'pangu-spacing-real-insert-separtor) t)))))
 
-(defun zilongshanren-ui/post-init-popwin ()
+(defun frtmelody-ui/post-init-popwin ()
   (progn
-    (push "*zilongshanren/run-current-file output*" popwin:special-display-config)
+    (push "*frtmelody/run-current-file output*" popwin:special-display-config)
     (delete "*Async Shell Command*" popwin:special-display-config)))
 
-(defun zilongshanren-ui/post-init-whitespace ()
+(defun frtmelody-ui/post-init-whitespace ()
   (progn
     ;; ;; http://emacsredux.com/blog/2013/05/31/highlight-lines-that-exceed-a-certain-length-limit/
     (setq whitespace-line-column fill-column) ;; limit line length

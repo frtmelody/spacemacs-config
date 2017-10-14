@@ -1,9 +1,9 @@
-;;; keybindings.el --- zilongshanren Layer packages File for Spacemacs
+;;; keybindings.el --- frtmelody Layer packages File for Spacemacs
 ;;
-;; Copyright (c) 2015-2016 zilongshanren
+;; Copyright (c) 2015-2016 frtmelody
 ;;
-;; Author: zilongshanren <guanghui8827@gmail.com>
-;; URL: https://github.com/zilongshanren/spacemacs-private
+;; Author: frtmelody <guanghui8827@gmail.com>
+;; URL: https://github.com/frtmelody/spacemacs-private
 ;;
 ;; This file is not part of GNU Emacs.
 ;;
@@ -17,13 +17,13 @@
 (define-key 'help-command (kbd "C-l") 'find-library)
 (define-key 'help-command (kbd "C-i") 'info-display-manual)
 
-(global-set-key [(shift return)] 'zilongshanren/smart-open-line)
+(global-set-key [(shift return)] 'frtmelody/smart-open-line)
 (global-set-key (kbd "s-/") 'hippie-expand)
 (global-set-key (kbd "C-c a") 'org-agenda)
 (define-key global-map (kbd "C-c y") 'youdao-dictionary-search-at-point+)
 (define-key global-map (kbd "<f9>") 'org-capture)
 (define-key global-map (kbd "C-c t") 'org-capture)
-(define-key global-map (kbd "<f8>") 'zilongshanren/show-current-buffer-major-mode)
+(define-key global-map (kbd "<f8>") 'frtmelody/show-current-buffer-major-mode)
 
 (global-set-key (kbd "C-c b") 'org-iswitchb)
 (global-set-key (kbd "C-c i e") 'spacemacs/auto-yasnippet-expand)
@@ -44,16 +44,16 @@
 (global-set-key (kbd "s-l") 'goto-line)
 ;; (global-set-key (kbd "s-s") 'save-buffer)
 (global-set-key (kbd "C-`") 'toggle-input-method)
-(global-set-key (kbd "s-d") 'zilongshanren/my-mc-mark-next-like-this)
+(global-set-key (kbd "s-d") 'frtmelody/my-mc-mark-next-like-this)
 (bind-key* "s-r" 'mc/reverse-regions)
-(global-set-key (kbd "<f5>") 'zilongshanren/run-current-file)
+(global-set-key (kbd "<f5>") 'frtmelody/run-current-file)
 
 ;; "http://endlessparentheses.com/transposing-keybinds-in-emacs.html?source=rss"
 ;; (global-set-key "\C-t" #'transpose-lines)
 ;; (define-key ctl-x-map "\C-t" #'transpose-chars)
 
 (when (spacemacs/system-is-mac)
- (spacemacs/set-leader-keys "o!" 'zilongshanren/iterm-shell-command))
+ (spacemacs/set-leader-keys "o!" 'frtmelody/iterm-shell-command))
 
 (spacemacs|add-toggle toggle-shadowsocks-proxy-mode
   :status shadowsocks-proxy-mode
@@ -66,15 +66,15 @@
 ;; (bind-key* "s-k" 'scroll-other-window-down)
 ;; (bind-key* "s-j"  'scroll-other-window)
 (bind-key* "C-c /" 'company-files)
-;; (bind-key* "s-r" 'zilongshanren/browser-refresh--chrome-applescript)
-(bind-key* "s-;" 'zilongshanren/insert-semicolon-at-the-end-of-this-line)
-(bind-key* "C-s-;" 'zilongshanren/delete-semicolon-at-the-end-of-this-line)
-(bind-key* "s-," 'zilongshanren/insert-comma-at-the-end-of-this-line)
-;; (bind-key* "C-s-," 'zilongshanren/delete-comma-at-the-end-of-this-line)
-(bind-key* "C-c l" 'zilongshanren/insert-chrome-current-tab-url)
+;; (bind-key* "s-r" 'frtmelody/browser-refresh--chrome-applescript)
+(bind-key* "s-;" 'frtmelody/insert-semicolon-at-the-end-of-this-line)
+(bind-key* "C-s-;" 'frtmelody/delete-semicolon-at-the-end-of-this-line)
+(bind-key* "s-," 'frtmelody/insert-comma-at-the-end-of-this-line)
+;; (bind-key* "C-s-," 'frtmelody/delete-comma-at-the-end-of-this-line)
+(bind-key* "C-c l" 'frtmelody/insert-chrome-current-tab-url)
 ;; (bind-key* "M-s o" 'occur-dwim)
 (bind-key* "C-=" 'er/expand-region)
-(bind-key* "M--" 'zilongshanren/goto-match-paren)
+(bind-key* "M--" 'frtmelody/goto-match-paren)
 (bind-key* "C-c k" 'which-key-show-top-level)
 (bind-key* "s-y" 'aya-expand)
 ;; (bind-key* "C-l" 'recenter)
@@ -97,8 +97,8 @@
   "]s" (lambda (n) (interactive "p")
          (forward-char) (dotimes (c n nil) (insert " ")) (backward-char (1+ n))))
 
-(spacemacs/set-leader-keys "bt" 'zilongshanren/open-terminal-in-current-dir)
-(spacemacs/set-leader-keys "bT" 'zilongshanren/open-markdown-in-typora)
+(spacemacs/set-leader-keys "bt" 'frtmelody/open-terminal-in-current-dir)
+(spacemacs/set-leader-keys "bT" 'frtmelody/open-markdown-in-typora)
 
 (with-eval-after-load 'company
   (progn
@@ -111,12 +111,12 @@
 (spacemacs/declare-prefix "ot" "Toggle")
 
 
-(global-set-key (kbd "<f1>") 'zilongshanren/helm-hotspots)
-(spacemacs/set-leader-keys "oo" 'zilongshanren/helm-hotspots)
+(global-set-key (kbd "<f1>") 'frtmelody/helm-hotspots)
+(spacemacs/set-leader-keys "oo" 'frtmelody/helm-hotspots)
 
 (spacemacs/set-leader-keys "oc" 'my-auto-update-tags-when-save)
-;; (spacemacs/set-leader-keys "op" 'zilongshanren/org-save-and-export)
-(spacemacs/set-leader-keys "fR" 'zilongshanren/rename-file-and-buffer)
+;; (spacemacs/set-leader-keys "op" 'frtmelody/org-save-and-export)
+(spacemacs/set-leader-keys "fR" 'frtmelody/rename-file-and-buffer)
 
 ;;Must set key to nil to prevent error: Key sequence b m s starts with non-prefix key b m
 (spacemacs/set-leader-keys "bm" nil)
@@ -129,7 +129,7 @@
 
 (spacemacs/set-leader-keys "od" 'occur-dwim)
 (spacemacs/set-leader-keys "ox" 'org-open-at-point)
-(spacemacs/set-leader-keys "or" 'zilongshanren/browser-refresh--chrome-applescript)
+(spacemacs/set-leader-keys "or" 'frtmelody/browser-refresh--chrome-applescript)
 
 (spacemacs/set-leader-keys "rh" 'helm-resume)
 (spacemacs/set-leader-keys "sj" 'counsel-imenu)
@@ -149,21 +149,21 @@
 (spacemacs/set-leader-keys "gL" 'magit-log-buffer-file)
 (spacemacs/set-leader-keys "og" 'my-git-timemachine)
 
-(spacemacs/set-leader-keys "sj" 'zilongshanren/counsel-imenu)
+(spacemacs/set-leader-keys "sj" 'frtmelody/counsel-imenu)
 ;; deal with BOM
 (spacemacs/set-leader-keys "fl" 'find-file-literally-at-point)
 (spacemacs/set-leader-keys "ri" 'ivy-resume)
 (spacemacs/set-leader-keys "fh" 'ffap-hexl-mode)
 (spacemacs/set-leader-keys "fd" 'projectile-find-file-dwim-other-window)
 (spacemacs/set-leader-keys "nl" 'spacemacs/evil-search-clear-highlight)
-(spacemacs/set-leader-keys "oll" 'zilongshanren/load-my-layout)
-(spacemacs/set-leader-keys "ols" 'zilongshanren/save-my-layout)
+(spacemacs/set-leader-keys "oll" 'frtmelody/load-my-layout)
+(spacemacs/set-leader-keys "ols" 'frtmelody/save-my-layout)
 (spacemacs/set-leader-keys "ob" 'popwin:display-last-buffer)
 (spacemacs/set-leader-keys "oy" 'youdao-dictionary-search-at-point+)
 (spacemacs/set-leader-keys "bM" 'spacemacs/switch-to-messages-buffer)
 
 (bind-key* "s-p" 'find-file-in-project)
-(spacemacs/set-leader-keys "os" 'zilongshanren/search-in-fireball)
+(spacemacs/set-leader-keys "os" 'frtmelody/search-in-fireball)
 
 (spacemacs/set-leader-keys "pa" 'projectile-find-other-file)
 (spacemacs/set-leader-keys "pA" 'projectile-find-other-file-other-window)
