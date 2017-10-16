@@ -871,12 +871,25 @@ Search for a search tool in the order provided by `dotspacemacs-search-tools'."
   (setq persp-kill-foreign-buffer-action 'kill)
   (setq persp-lighter nil)
   (when (fboundp 'spacemacs|define-custom-layout)
-    (spacemacs|define-custom-layout "@Cocos2D-X"
-      :binding "c"
+    (progn
+    (spacemacs|define-custom-layout "@Python-module"
+      :binding "p"
       :body
-      (find-file "~/cocos2d-x/cocos/ui/UIWidget.cpp")
+      (find-file "~/Svnprojects/python_module/engine/tornado_extend/extend.py")
       (split-window-right)
-      (find-file "~/cocos2d-x/cocos/cocos2d.cpp"))))
+      (find-file "~/Svnprojects/python_module/engine/setup.py"))
+    (spacemacs|define-custom-layout "@Golang"
+      :binding "g"
+      :body
+      (find-file "~/go/src/git.inke.cn/BackendPlatform/golang/logging/logger.go")
+      (split-window-right)
+      (find-file "~/go/src/git.inke.cn/BackendPlatform/golang/balance/balance.go"))
+    (spacemacs|define-custom-layout "@Rpc-python"
+      :binding "y"
+      :body
+      (find-file "~/Svnprojects/inkelogic/src/inkelogic/rpc-python/inkelogic/client/http.py")
+      )
+    )))
 
 (defun frtmelody-misc/post-init-chinese-wbim ()
   (progn
@@ -906,21 +919,21 @@ Search for a search tool in the order provided by `dotspacemacs-search-tools'."
       ;;(setq ffip-project-file ".svn")
       ;; in MacOS X, the search file command is CMD+p
       ;; for this project, I'm only interested certain types of files
-      (setq-default ffip-patterns '("*.html" "*.js" "*.css" "*.java" "*.xml" "*.cpp" "*.h" "*.c" "*.mm" "*.m" "*.el"))
+      (setq-default ffip-patterns '("*.html" "*.js" "*.css" "*.java" "*.xml" "*.cpp" "*.h" "*.c" "*.mm" "*.m" "*.el", "*.py"))
       ;; if the full path of current file is under SUBPROJECT1 or SUBPROJECT2
       ;; OR if I'm reading my personal issue track document,
       (defadvice find-file-in-project (before my-find-file-in-project activate compile)
-        (when (ffip-current-full-filename-match-pattern-p "\\(/fireball\\)")
+        (when (ffip-current-full-filename-match-pattern-p "\\(/tornado\\)")
           ;; set the root directory into "~/projs/PROJECT_DIR"
-          (setq-local ffip-project-root "~/Github/fireball")
+          (setq-local ffip-project-root "~/Source/python/tornado")
           ;; well, I'm not interested in concatenated BIG js file or file in dist/
           (setq-local ffip-find-options "-not -size +64k -not -iwholename '*/bin/*'")
           ;; do NOT search files in below directories, the default value is better.
           (dolist (item '("*/docs/html/*" "*.meta" "*/cocos2d-x/*" "*.asset" "*/visual-tests/res/*"))
             (push item  ffip-prune-patterns)))
-        (when (ffip-current-full-filename-match-pattern-p "\\(/cocos2d-x\\)")
+        (when (ffip-current-full-filename-match-pattern-p "\\(/rpc-go\\)")
           ;; set the root directory into "~/projs/PROJECT_DIR"
-          (setq-local ffip-project-root "~/cocos2d-x")
+          (setq-local ffip-project-root "~/go/src/git.inke.cn/inkelogic/rpc-go")
           ;; well, I'm not interested in concatenated BIG js file or file in dist/
           (setq-local ffip-find-options "-not -size +64k -not -iwholename '*/bin/*'")
           ;; do NOT search files in below directories, the default value is better.

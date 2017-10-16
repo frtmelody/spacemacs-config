@@ -13,7 +13,7 @@
 ;; (setq-default ns-use-srgb-colorspace nil)
 
 ;; http://emacsredux.com/blog/2014/04/05/which-function-mode/
-(which-function-mode)
+(which-function-mode t)
 ;; when editing js file, this feature is very useful
 (setq-default header-line-format
               '((which-func-mode ("" which-func-format " "))))
