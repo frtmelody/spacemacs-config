@@ -2,7 +2,7 @@
 ;;
 ;; Copyright (c) 2015-2016 frtmelody 
 ;;
-;; Author: frtmelody <guanghui8827@gmail.com>
+;; Author: frtmelody <frtmelody@gmail.com>
 ;; URL: https://github.com/frtmelody/spacemacs-private
 ;;
 ;; This file is not part of GNU Emacs.
@@ -31,19 +31,19 @@
   "default deploy task"
   (interactive)
   (frtmelody/octopress-rake "deploy")
-  (frtmelody/octopress-qrsync "/Users/guanghui/4gamers.cn/guanghui.json")
+  (frtmelody/octopress-qrsync "/Users/melody/4gamers.cn/melody.json")
   (message "Deploy site OK"))
 
 (defun frtmelody/octopress-gen-deploy ()
   "generate website and deploy"
   (interactive)
   (frtmelody/octopress-rake "gen_deploy")
-  (frtmelody/octopress-qrsync "/Users/guanghui/4gamers.cn/guanghui.json")
+  (frtmelody/octopress-qrsync "/Users/melody/4gamers.cn/melody.json")
   (message "Generate and Deploy OK"))
 
 (defun frtmelody/octopress-upimg ()
   (interactive)
-  (frtmelody/octopress-qrsync "/Users/guanghui/4gamers.cn/guanghui.json")
+  (frtmelody/octopress-qrsync "/Users/melody/4gamers.cn/melody.json")
   (message "Up Img to Qiniu"))
 
 (defun frtmelody/directory-parent (directory)

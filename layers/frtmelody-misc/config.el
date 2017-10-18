@@ -2,7 +2,7 @@
 ;;
 ;; Copyright (c) 2014-2016 frtmelody
 ;;
-;; Author: frtmelody <guanghui8827@gmail.com>
+;; Author: frtmelody <frtmelody@gmail.com>
 ;; URL: https://github.com/frtmelody/spacemacs-private
 ;;
 ;; This file is not part of GNU Emacs.
@@ -22,7 +22,7 @@
                                             ("8zh" "@~chinese")
                                             ("8sp" "spacemacs")
                                             ;; email
-                                            ("8me" "guanghui8827@gmail.com")
+                                            ("8me" "frtmelody@gmail.com")
 
                                             ;; computing tech
                                             ("8wp" "Wikipedia")

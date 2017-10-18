@@ -77,6 +77,8 @@ values."
              python-enable-yapf-format-on-save t
              python-test-runner '(nose pytest))
 
+     ;(mu4e :variables
+     ;        mu4e-installation-path "/usr/share/emacs/site-lisp")
      (go :variables gofmt-command "goimports")
      ;; (ruby :variables ruby-version-manager 'chruby)
      ;; ruby-on-rails

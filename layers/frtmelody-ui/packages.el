@@ -2,7 +2,7 @@
 ;;
 ;; Copyright (c) 2014-2016 frtmelody
 ;;
-;; Author: guanghui <guanghui8827@gmail.com>
+;; Author: melody <frtmelody@gmail.com>
 ;; URL: https://github.com/frtmelody/spacemacs-private
 ;;
 ;; This file is not part of GNU Emacs.

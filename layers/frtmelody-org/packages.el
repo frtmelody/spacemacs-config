@@ -2,7 +2,7 @@
 ;;
 ;; Copyright (c) 2014-2016 frtmelody
 ;;
-;; Author: guanghui <guanghui8827@gmail.com>
+;; Author: frtmelody <frtmelody@gmail.com>
 ;; URL: https://github.com/frtmelody/spacemacs-private
 ;;
 ;; This file is not part of GNU Emacs.
@@ -312,7 +312,7 @@ unwanted space when exporting org-mode to html."
                :section-numbers nil
                :html-preamble ,frtmelody-website-html-preamble
                :author "frtmelody"
-               :email "guanghui8827@gmail.com"
+               :email "frtmelody@gmail.com"
                :auto-sitemap t          ; Generate sitemap.org automagically...
                :sitemap-filename "index.org" ; ... call it sitemap.org (it's the default)...
                :sitemap-title "我的wiki"     ; ... with title 'Sitemap'.
@@ -430,7 +430,7 @@ holding contextual information."
     :defer t))
 
 (defun frtmelody-org/post-init-ox-reveal ()
-  (setq org-reveal-root "file:///Users/guanghui/.emacs.d/reveal-js"))
+  (setq org-reveal-root "file:///Users/melody/.emacs.d/reveal-js"))
 
 
 (defun frtmelody-org/init-org-tree-slide ()

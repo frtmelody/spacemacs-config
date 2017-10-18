@@ -2,7 +2,7 @@
 ;;
 ;; Copyright (c) 2014-2016 frtmelody
 ;;
-;; Author: frtmelody <guanghui8827@gmail.com>
+;; Author: frtmelody <frtmelody@gmail.com>
 ;; URL: https://github.com/frtmelody/spacemacs-private
 ;;
 ;; This file is not part of GNU Emacs.
@@ -1013,7 +1013,7 @@ Search for a search tool in the order provided by `dotspacemacs-search-tools'."
     (prodigy-define-service
       :name "Debug Fireball"
       :command "npm"
-      :args '("start" "--" "--nologin" "/Users/guanghui/Github/example-cases")
+      :args '("start" "--" "--nologin" "/Users/melody/Github/example-cases")
       :cwd "~/Github/fireball/"
       :tags '(work)
       :kill-signal 'sigkill

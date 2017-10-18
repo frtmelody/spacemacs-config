@@ -141,9 +141,9 @@
 )
 
 (defun frtmelody-programming/post-init-js-doc ()
-  (setq js-doc-mail-address "guanghui8827@gmail.com"
-        js-doc-author (format "Guanghui Qu <%s>" js-doc-mail-address)
-        js-doc-url "http://www.frtmelody.com"
+  (setq js-doc-mail-address "frtmelody@gmail.com"
+        js-doc-author (format "Ning Xue <%s>" js-doc-mail-address)
+        js-doc-url "http://www.frtmelody.tech"
         js-doc-license "MIT")
 
   )
@@ -556,4 +556,4 @@
            ("/usr/include/" "/usr/local/include/" "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1")))
     (setq company-c-headers-path-user
           (quote
-           ("/Users/guanghui/cocos2d-x/cocos/platform" "/Users/guanghui/cocos2d-x/cocos" "." "/Users/guanghui/cocos2d-x/cocos/audio/include/")))))
+           ("/Users/melody/cocos2d-x/cocos/platform" "/Users/melody/cocos2d-x/cocos" "." "/Users/melody/cocos2d-x/cocos/audio/include/")))))

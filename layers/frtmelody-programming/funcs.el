@@ -2,7 +2,7 @@
 ;;
 ;; Copyright (c) 2015-2016 frtmelody 
 ;;
-;; Author: frtmelody <guanghui8827@gmail.com>
+;; Author: frtmelody <frtmelody@gmail.com>
 ;; URL: https://github.com/frtmelody/spacemacs-private
 ;;
 ;; This file is not part of GNU Emacs.
@@ -250,7 +250,7 @@ version 2015-08-21"
 
 (defun my-setup-develop-environment ()
   (interactive)
-  (when (my-project-name-contains-substring "guanghui")
+  (when (my-project-name-contains-substring "melody")
     (cond
      ((my-project-name-contains-substring "cocos2d-x")
       ;; C++ project don't need html tags
