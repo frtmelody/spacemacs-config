@@ -77,14 +77,14 @@
       (kill-new val)
       (message "%s => kill-ring" val))))
 
-  ;; my fix for tab indent
+;; my fix for tab indent
 (defun frtmelody/indent-region(numSpaces)
   (progn
-                                      ; default to start and end of current line
+                                        ; default to start and end of current line
     (setq regionStart (line-beginning-position))
     (setq regionEnd (line-end-position))
 
-                                      ; if there's a selection, use that instead of the current line
+                                        ; if there's a selection, use that instead of the current line
     (when (use-region-p)
       (setq regionStart (region-beginning))
       (setq regionEnd (region-end))
@@ -235,13 +235,42 @@ e.g. Sunday, September 17, 2000."
 (defun frtmelody/growl-notification (title message &optional sticky)
   "Send a Growl notification"
   (do-applescript
-   (format "tell application \"GrowlHelperApp\" \n
-              notify with name \"Emacs Notification\" title \"%s\" description \"%s\" application name \"Emacs.app\" sticky \"%s\"
-              end tell
-              "
-           title
-           message
-           (if sticky "yes" "no"))))
+   (format
+    "
+    tell application \"com.Growl.GrowlHelperApp\"
+          notify with name \"Emacs Notification\" title \"%s\" description \"%s\" application name \"Emacs.app\" sticky \"%s\"
+    end tell
+    "
+    title
+    message
+    (if sticky "yes" "no"))))
+
+(setq frtmelody-terminal-notifier-command (executable-find "terminal-notifier"))
+(defun frtmelody/terminal-notifier-notify (title message)
+  "Show a message with `terminal-notifier-command`."
+  (start-process "terminal-notifier"
+                 "*terminal-notifier*"
+                 frtmelody-terminal-notifier-command
+                 "-title" title
+                 "-message" message
+                 "-sound" "default"
+                 "-activate" "org.gnu.Emacs"
+                 "-timeout" "120"
+                 "-closeLabel" "No"
+                 "-actions" "Yes"
+                 "-sender" "org.gnu.Emacs"))
+
+
+(defun frtmelody/terminal-timer (minutes message)
+  "Issue a Growl notification after specified minutes"
+  (interactive (list (read-from-minibuffer "Minutes: " "10")
+                     (read-from-minibuffer "Message: " "Reminder") ))
+  (run-at-time (* (string-to-number minutes) 60)
+               nil
+               (lambda (minute message)
+                 (frtmelody/terminal-notifier-notify "Emacs Reminder" message))
+               minutes
+               message))
 
 (defun frtmelody/growl-timer (minutes message)
   "Issue a Growl notification after specified minutes"

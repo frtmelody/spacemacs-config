@@ -245,22 +245,22 @@ unwanted space when exporting org-mode to html."
             '(("t" "Todo" entry (file+headline org-agenda-file-gtd "Workspace")
                "* TODO [#B] %?\n  %i\n"
                :empty-lines 1)
-              ("n" "notes" entry (file+headline org-agenda-file-note "Quick notes")
+              ("n" "Notes" entry (file+headline org-agenda-file-note "Quick notes")
                "* %?\n  %i\n %U"
                :empty-lines 1)
-              ("b" "Blog Ideas" entry (file+headline org-agenda-file-note "Blog Ideas")
+              ("i" "Ideas" entry (file+headline org-agenda-file-note "Ideas")
                "* TODO [#B] %?\n  %i\n %U"
                :empty-lines 1)
               ("s" "Code Snippet" entry
                (file org-agenda-file-code-snippet)
                "* %?\t%^g\n#+BEGIN_SRC %^{language}\n\n#+END_SRC")
-              ("w" "work" entry (file+headline org-agenda-file-gtd "Cocos2D-X")
+              ("w" "Work Project" entry (file+headline org-agenda-file-gtd "WorkProject")
                "* TODO [#A] %?\n  %i\n %U"
                :empty-lines 1)
               ("c" "Chrome" entry (file+headline org-agenda-file-note "Quick notes")
                "* TODO [#C] %?\n %(frtmelody/retrieve-chrome-current-tab-url)\n %i\n %U"
                :empty-lines 1)
-              ("l" "links" entry (file+headline org-agenda-file-note "Quick notes")
+              ("l" "Links" entry (file+headline org-agenda-file-note "Quick notes")
                "* TODO [#C] %?\n  %i\n %a \n %U"
                :empty-lines 1)
               ("j" "Journal Entry"
