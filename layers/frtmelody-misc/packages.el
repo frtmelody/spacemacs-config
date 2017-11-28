@@ -43,12 +43,16 @@
         golden-ratio
         (highlight-global :location (recipe :fetcher github :repo "glen-dai/highlight-global"))
         browse-at-remote
+        excorporate
         ))
 
 (defun frtmelody-misc/init-browse-at-remote ()
   (use-package browse-at-remote
     :defer t
     :init (spacemacs/set-leader-keys "gho" 'browse-at-remote)))
+
+(defun frtmelody-misc/init-excorporate ()
+  (use-package browse-at-remote))
 
 (defun frtmelody-misc/init-highlight-global ()
   (use-package highlight-global

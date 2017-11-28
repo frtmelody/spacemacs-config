@@ -1,6 +1,6 @@
 ;;; funcs.el --- frtmelody Layer packages File for Spacemacs
 ;;
-;; Copyright (c) 2015-2016 frtmelody 
+;; Copyright (c) 2015-2016 frtmelody
 ;;
 ;; Author: frtmelody <frtmelody@gmail.com>
 ;; URL: https://github.com/frtmelody/spacemacs-private
@@ -658,3 +658,7 @@ Error out if this isn't a GitHub repo."
                              "/usr/bin/gnome-terminal")))
       (start-process "" nil openFileProgram ".")))
    ))
+
+(defun frtmelody/exco-calendar-show-day ()
+  (interactive)
+   (apply excorporate-calendar-show-day-function (calendar-current-date 0)))

@@ -43,3 +43,32 @@
 
 
 (setq user-mail-address "frtmelody@gmail.com")
+
+;;; Set up some common mu4e variables
+(setq mu4e-maildir "~/.mail"
+      mu4e-trash-folder "/Trash"
+      mu4e-refile-folder "/Archive"
+      mu4e-get-mail-command "mbsync -a"
+      mu4e-update-interval 120
+      mu4e-compose-signature-auto-include nil
+      mu4e-view-show-images t
+      mu4e-view-show-addresses t)
+
+;;; Mail directory shortcuts
+(setq mu4e-maildir-shortcuts
+      '(("/gmail/INBOX" . ?g)
+        ;; ("/inke/CDN" . ?C)
+        ("/inke/inbox" . ?i)))
+
+;;; Bookmarks
+(setq mu4e-bookmarks
+      `(("flag:unread AND NOT flag:trashed" "Unread messages" ?u)
+        ("date:today..now" "Today's messages" ?t)
+        ("date:7d..now" "Last 7 days" ?w)
+        ("mime:image/*" "Messages with images" ?p)
+        (,(mapconcat 'identity
+                     (mapcar
+                      (lambda (maildir)
+                        (concat "maildir:" (car maildir)))
+                      mu4e-maildir-shortcuts) " OR ")
+         "All inboxes" ?i)))

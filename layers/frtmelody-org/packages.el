@@ -233,6 +233,10 @@ unwanted space when exporting org-mode to html."
       (setq org-default-notes-file (expand-file-name "gtd.org" org-agenda-dir))
       (setq org-agenda-files (list org-agenda-dir))
 
+      (setq org-directory "~/org-notes/")
+      (setq org-mobile-directory "~/Documents/MobileOrg")
+      (setq org-mobile-inbox-for-pull "~/org-notes/inbox.org")
+
       (with-eval-after-load 'org-agenda
         (define-key org-agenda-mode-map (kbd "P") 'org-pomodoro)
         (spacemacs/set-leader-keys-for-major-mode 'org-agenda-mode
@@ -270,20 +274,20 @@ unwanted space when exporting org-mode to html."
 
       ;;An entry without a cookie is treated just like priority ' B '.
       ;;So when create new task, they are default 重要且紧急
-      (setq org-agenda-custom-commands
-            '(
-              ("w" . "任务安排")
-              ("wa" "重要且紧急的任务" tags-todo "+PRIORITY=\"A\"")
-              ("wb" "重要且不紧急的任务" tags-todo "-Weekly-Monthly-Daily+PRIORITY=\"B\"")
-              ("wc" "不重要且紧急的任务" tags-todo "+PRIORITY=\"C\"")
-              ("b" "Blog" tags-todo "BLOG")
-              ("p" . "项目安排")
-              ("pw" tags-todo "PROJECT+WORK+CATEGORY=\"cocos2d-x\"")
-              ("pl" tags-todo "PROJECT+DREAM+CATEGORY=\"frtmelody\"")
-              ("W" "Weekly Review"
-               ((stuck "") ;; review stuck projects as designated by org-stuck-projects
-                (tags-todo "PROJECT") ;; review all projects (assuming you use todo keywords to designate projects)
-                ))))
+      ;; (setq org-agenda-custom-commands
+      ;;       '(
+      ;;         ("w" . "任务安排")
+      ;;         ("wa" "重要且紧急的任务" tags-todo "+PRIORITY=\"A\"")
+      ;;         ("wb" "重要且不紧急的任务" tags-todo "-Weekly-Monthly-Daily+PRIORITY=\"B\"")
+      ;;         ("wc" "不重要且紧急的任务" tags-todo "+PRIORITY=\"C\"")
+      ;;         ("b" "Blog" tags-todo "BLOG")
+      ;;         ("p" . "项目安排")
+      ;;         ("pw" tags-todo "PROJECT+WORK+CATEGORY=\"cocos2d-x\"")
+      ;;         ("pl" tags-todo "PROJECT+DREAM+CATEGORY=\"frtmelody\"")
+      ;;         ("W" "Weekly Review"
+      ;;          ((stuck "") ;; review stuck projects as designated by org-stuck-projects
+      ;;           (tags-todo "PROJECT") ;; review all projects (assuming you use todo keywords to designate projects)
+      ;;           ))))
 
       (defvar frtmelody-website-html-preamble
         "<div class='nav'>

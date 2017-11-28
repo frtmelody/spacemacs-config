@@ -66,9 +66,9 @@ values."
      latex
      deft
      markdown
-     ;; (treemacs :variables
-     ;;  treemacs-use-follow-mode t
-     ;;  treemacs-use-filewatch-mode t)
+     (treemacs :variables
+      treemacs-use-follow-mode t
+      treemacs-use-filewatch-mode t)
      (org :variables org-want-todo-bindings t)
      gpu
      yaml
@@ -77,8 +77,13 @@ values."
              python-enable-yapf-format-on-save t
              python-test-runner '(nose pytest))
 
-     ;(mu4e :variables
-     ;        mu4e-installation-path "/usr/share/emacs/site-lisp")
+     (mu4e :variables
+           mu4e-installation-path "/usr/local/Cellar/mu/0.9.18_1/share/emacs/site-lisp/"
+           mu4e-enable-notifications t
+           mu4e-enable-mode-line t
+           mu4e-spacemacs-layout-name "@Mu4e"
+           mu4e-spacemacs-layout-binding "m"
+           )
      (go :variables gofmt-command "goimports")
      ;; (ruby :variables ruby-version-manager 'chruby)
      ;; ruby-on-rails
@@ -86,6 +91,8 @@ values."
      html
      rust
      javascript
+     java
+     ycmd
      (typescript :variables
                  typescript-fmt-on-save nil
                  typescript-fmt-tool 'typescript-formatter)
@@ -96,7 +103,7 @@ values."
             c-c++-default-mode-for-headers 'c++-mode)
      frtmelody
      (chinese :packages youdao-dictionary fcitx
-              :variables chinese-enable-fcitx nil
+              :variables chinese-enable-fcitx t
               chinese-enable-youdao-dict t))
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
@@ -107,23 +114,24 @@ values."
    dotspacemacs-frozen-packages '()
    dotspacemacs-excluded-packages
    '(
-     magit-gh-pulls magit-gitflow org-projectile evil-mc realgud
-     evil-args evil-ediff evil-exchange evil-unimpaired
-     evil-indent-plus volatile-highlights smartparens
-     spaceline holy-mode skewer-mode rainbow-delimiters
-     highlight-indentation vi-tilde-fringe eyebrowse
-     org-bullets smooth-scrolling org-repo-todo org-download org-timer
-     livid-mode git-gutter git-gutter-fringe  evil-escape
-     leuven-theme gh-md evil-lisp-state spray lorem-ipsum symon
-     ac-ispell ace-jump-mode auto-complete auto-dictionary
-     clang-format define-word google-translate disaster epic
-     fancy-battery org-present orgit orglue spacemacs-theme
-     helm-flyspell flyspell-correct-helm clean-aindent-mode
-     helm-c-yasnippet ace-jump-helm-line helm-make magithub
-     helm-themes helm-swoop helm-spacemacs-help smeargle
-     ido-vertical-mode flx-ido company-quickhelp counsel-projectile
-     window-purpose spacemacs-purpose-popwin
-     ivy-purpose helm-purpose
+     spaceline
+      ;; magit-gh-pulls magit-gitflow org-projectile evil-mc realgud
+      ;; evil-args evil-ediff evil-exchange evil-unimpaired
+      ;; evil-indent-plus volatile-highlights smartparens
+      ;; spaceline holy-mode skewer-mode rainbow-delimiters
+      ;; highlight-indentation vi-tilde-fringe eyebrowse
+      ;; org-bullets smooth-scrolling org-repo-todo org-download org-timer
+      ;; livid-mode git-gutter git-gutter-fringe  evil-escape
+      ;; leuven-theme gh-md evil-lisp-state spray lorem-ipsum symon
+      ;; ac-ispell ace-jump-mode auto-complete auto-dictionary
+      ;; clang-format define-word google-translate disaster epic
+      ;; fancy-battery org-present orgit orglue spacemacs-theme
+      ;; helm-flyspell flyspell-correct-helm clean-aindent-mode
+      ;; helm-c-yasnippet ace-jump-helm-line helm-make magithub
+      ;; helm-themes helm-swoop helm-spacemacs-help smeargle
+      ;; ido-vertical-mode flx-ido company-quickhelp counsel-projectile
+      ;; window-purpose spacemacs-purpose-popwin
+      ;; ivy-purpose helm-purpose
      )
    dotspacemacs-install-packages 'used-only
    dotspacemacs-delete-orphan-packages t))
@@ -186,10 +194,10 @@ values."
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
-   dotspacemacs-themes '(doom-one
-                         doom-one-light)
-   ;dotspacemacs-themes '(solarized-light
-   ;                      solarized-dark)
+   ;; dotspacemacs-themes '(doom-one-light
+   ;;                       doom-one)
+   dotspacemacs-themes '(solarized-light
+                        solarized-dark)
    ;; If non nil the cursor color matches the state color in GUI Emacs.
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
@@ -198,7 +206,7 @@ values."
                                :size 14
                                :weight normal
                                :width normal
-                               :powerline-scale 1.1)
+                               :powerline-scale 1.2)
    ;; The leader key
    dotspacemacs-leader-key "SPC"
    ;; The key used for Emacs commands (M-x) (after pressing on the leader key).
@@ -374,11 +382,16 @@ values."
 
 (defun dotspacemacs/user-config ()
   (eval-after-load 'tramp '(setenv "SHELL" "/bin/bash"))
-  ;(global-company-mode t)
-  ;(setq debug-on-error t)
+  ;; (global-company-mode t)
+  ;; (setq debug-on-error t)
+  (set-variable 'ycmd-server-command `("python" ,(expand-file-name "~/.vim/bundle/YouCompleteMe/third_party/ycmd/ycmd/__main__.py")))
 
   (setq ns-use-srgb-colorspace nil)
   (setq powerline-default-separator 'utf-8)
+
+  (with-eval-after-load 'mu4e-alert
+    ;; Enable Desktop notifications
+    (mu4e-alert-set-default-style 'notifier))
 
   (global-hl-line-mode 1)
   (unless (display-graphic-p)
@@ -386,25 +399,25 @@ values."
     (setq linum-relative-format (concat linum-relative-format " "))
     )
   ;;解决org表格里面中英文对齐的问题
-  (when (configuration-layer/layer-usedp 'chinese)
-    (when (and (spacemacs/system-is-mac) window-system)
-      (spacemacs//set-monospaced-font "Source Code Pro" "Hiragino Sans GB" 14 16)))
+  ;; (when (configuration-layer/layer-usedp 'chinese)
+  ;;   (when (and (spacemacs/system-is-mac) window-system)
+  ;;     (spacemacs//set-monospaced-font "Source Code Pro" "Hiragino Sans GB" 14 16)))
 
   ;; Setting Chinese Font
-  (when (and (spacemacs/system-is-mswindows) window-system)
-    (setq ispell-program-name "aspell")
-    (setq w32-pass-alt-to-system nil)
-    (setq w32-apps-modifier 'super)
-    (dolist (charset '(kana han symbol cjk-misc bopomofo))
-      (set-fontset-font (frame-parameter nil 'font)
-                        charset
-                        (font-spec :family "Microsoft Yahei" :size 14))))
+  ;; (when (and (spacemacs/system-is-mswindows) window-system)
+  ;;   (setq ispell-program-name "aspell")
+  ;;   (setq w32-pass-alt-to-system nil)
+  ;;   (setq w32-apps-modifier 'super)
+  ;;   (dolist (charset '(kana han symbol cjk-misc bopomofo))
+  ;;     (set-fontset-font (frame-parameter nil 'font)
+  ;;                       charset
+  ;;                       (font-spec :family "Microsoft Yahei" :size 14))))
 
   (fset 'evil-visual-update-x-selection 'ignore)
 
   ;; force horizontal split window
   (setq split-width-threshold 120)
-  ;(linum-relative-on)
+                                        ;(linum-relative-on)
 
   (spacemacs|add-company-backends :modes text-mode)
 

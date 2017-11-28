@@ -99,6 +99,7 @@
 
 (spacemacs/set-leader-keys "bt" 'frtmelody/open-terminal-in-current-dir)
 (spacemacs/set-leader-keys "bT" 'frtmelody/open-markdown-in-typora)
+(spacemacs/set-leader-keys "om" 'frtmelody/exco-calendar-show-day)
 
 (with-eval-after-load 'company
   (progn

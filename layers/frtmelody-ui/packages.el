@@ -15,6 +15,8 @@
     diminish
     popwin
     doom-themes
+    all-the-icons-dired
+    all-the-icons
     (whitespace :location built-in)
     ;; hl-anything performance is very slow...
     ;; hl-anything
@@ -31,6 +33,14 @@
     (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
           doom-themes-enable-italic t) ; if nil, italics is universally disabled
     ))
+
+(defun ztlevi-ui/init-all-the-icons-dired ()
+  (use-package all-the-icons-dired
+    :defer t))
+
+(defun ztlevi-ui/init-all-the-icons ()
+  (use-package all-the-icons
+    :defer t))
 
 (defun frtmelody-ui/init-frtmelody-mode-line ()
   (defun frtmelody/display-mode-indent-width ()
@@ -318,3 +328,7 @@ This segment overrides the modeline functionality of `org-mode-line-string'."
                             :weight 'normal)))
 
     (diminish 'whitespace-mode)))
+
+(setq frame-title-format
+      (list (format "%s %%S: %%j " (system-name))
+            '(buffer-file-name "%f" (dired-directory dired-directory "%b"))))

@@ -14,6 +14,8 @@
 
 (setq frtmelody-programming-packages
       '(
+        (anaconda-mode :excluded t)
+        (company-anaconda :excluded t)
         css-mode
         paredit
         lispy
@@ -34,15 +36,18 @@
         (cc-mode :location built-in)
         ;; flycheck-clojure
         etags-select
+        ycmd
         (python :location built-in)
         (emacs-lisp :location built-in)
         ;; clojure-mode
         company
+        company-ycmd
         (eldoc :location built-in)
         dumb-jump
         graphviz-dot-mode
         cider
         toml-mode
+        ;; company-flx
         ;; editorconfig
         robe
         ))
@@ -129,13 +134,18 @@
 (defun frtmelody-programming/post-init-python ()
   (add-hook 'python-mode-hook #'(lambda () (modify-syntax-entry ?_ "w")))
   ;; if you use pyton3, then you could comment the following line
+  (add-hook 'python-mode-hook
+            (lambda ()
+              ;; I was seeing tramp slowdowns when ycmd was active...
+              (unless (tramp-tramp-file-p (buffer-file-name (current-buffer)))
+                (ycmd-mode))))
   (setq python-shell-interpreter "python"))
 
 (defun frtmelody-programming/post-init-go-mode ()
   (add-hook 'before-save-hook 'gofmt-before-save)
    (add-hook 'go-mode-hook
           (lambda ()
-            (set (make-local-variable 'company-backends) '(company-go))
+            (set (make-local-variable 'company-backends) '(company-ycmd))
             (company-mode)
             ))
 )
@@ -477,25 +487,33 @@
     :init
     (eval-after-load 'flycheck '(flycheck-clojure-setup))))
 
+;; https://github.com/abingham/emacs-ycmd
+(defun frtmelody-programming/ycmd-setup-completion-at-point-function ()
+  "Setup `completion-at-point-functions' for `ycmd-mode'."
+  (add-hook 'completion-at-point-functions
+            #'ycmd-complete-at-point nil :local))
+
 (defun frtmelody-programming/post-init-ycmd ()
   (progn
+    (set-variable 'ycmd-parse-conditions '(save new-line buffer-focus))
+    (set-variable 'ycmd-idle-change-delay 0.1)
+    (set-variable 'url-show-status nil)
+    (set-variable 'ycmd-request-message-level -1)
+
     (setq ycmd-tag-files 'auto)
     (setq ycmd-request-message-level -1)
-    (set-variable 'ycmd-server-command `("python" ,(expand-file-name "~/.vim/bundle/YouCompleteMe/third_party/ycmd/ycmd/__main__.py")))
-    (setq company-backends-c-mode-common '((company-c-headers
-                                            company-dabbrev-code
-                                            company-keywords
-                                            company-gtags :with company-yasnippet)
-                                           company-files company-dabbrev ))
 
     (frtmelody|toggle-company-backends company-ycmd)
-    (eval-after-load 'ycmd
-      '(spacemacs|hide-lighter ycmd-mode))
+    ;; (setq-local company-backends (push 'company-ycmd company-backends))
+    ;; (eval-after-load 'ycmd
+    ;;   '(spacemacs|hide-lighter ycmd-mode))
+    (spacemacs/set-leader-keys-for-major-mode 'prog-mode "tb" 'frtmelody/company-toggle-company-ycmd)))
 
-    (spacemacs/set-leader-keys-for-major-mode 'c-mode
-      "tb" 'frtmelody/company-toggle-company-ycmd)
-    (spacemacs/set-leader-keys-for-major-mode 'c++-mode
-      "tb" 'frtmelody/company-toggle-company-ycmd)))
+(defun frtmelody-programming/post-init-company-ycmd ()
+    (push 'company-ycmd company-backends-js2-mode)
+    (push 'company-ycmd company-backends-python-mode)
+    (push 'company-ycmd company-backends-c++-mode)
+  )
 
 ;; when many project has the need to use tags, I will give etags-table and etags-update a try
 (defun frtmelody-programming/init-etags-select ()
@@ -544,11 +562,28 @@
 (defun frtmelody-programming/post-init-company ()
   (progn
     (setq company-minimum-prefix-length 1
-          company-idle-delay 0.08)
+          company-echo-delay 0
+          company-tooltip-limit 20
+          company-idle-delay 0.08
+          company-begin-commands '(self-insert-command)
+          )
 
     (when (configuration-layer/package-usedp 'company)
-      (spacemacs|add-company-backends :modes shell-script-mode makefile-bsdmake-mode sh-mode lua-mode nxml-mode conf-unix-mode json-mode graphviz-dot-mode go-mode))
-    ))
+      (spacemacs|add-company-backends :modes shell-script-mode makefile-bsdmake-mode sh-mode lua-mode nxml-mode conf-unix-mode json-mode graphviz-dot-mode go-mode python-mode toml-mode))
+    )
+  ;; define company-mode keybindings
+  (with-eval-after-load 'company
+    (progn
+      (bb/define-key company-active-map
+        (kbd "C-w") 'evil-delete-backward-word)
+
+      (bb/define-key company-active-map
+        (kbd "s-w") 'company-show-location)
+      (define-key company-active-map (kbd "M-n") nil)
+      (define-key company-active-map (kbd "M-p") nil)
+      (define-key company-active-map (kbd "C-n") #'company-select-next)
+      (define-key company-active-map (kbd "C-p") #'company-select-previous)))
+  )
 (defun frtmelody-programming/post-init-company-c-headers ()
   (progn
     (setq company-c-headers-path-system

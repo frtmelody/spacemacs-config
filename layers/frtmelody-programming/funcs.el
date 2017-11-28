@@ -259,3 +259,12 @@ version 2015-08-21"
       (message "load tags for fireball engine repo...")
       ;; html project donot need C++ tags
       (setq tags-table-list (list (my-create-tags-if-needed "~/Github/fireball/engine/cocos2d")))))))
+
+
+(defun frtmelody-programming/ycmd-semantic-completion ()
+  "Do a semantic completion with YCMD."
+  (interactive)
+  (company-cancel)
+  (let ((ycmd-force-semantic-completion (not (company-ycmd--in-include))))
+    (setq company-backend 'company-ycmd)
+    (company-manual-begin)))
