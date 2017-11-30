@@ -18,12 +18,6 @@
 
 (add-hook 'term-mode-hook 'frtmelody/ash-term-hooks)
 
-(add-hook 'c++-mode-hook 'ycmd-mode)
-(add-hook 'c-mode-hook 'ycmd-mode)
-(add-hook 'python-mode-hook 'ycmd-mode)
-(add-hook 'go-mode-hook 'ycmd-mode)
-(add-hook 'ycmd-mode-hook #'frtmelody-programming/ycmd-setup-completion-at-point-function)
-
 
 ;; reformat your json file, it requires python
 (defun beautify-json ()

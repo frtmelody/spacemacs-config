@@ -14,8 +14,8 @@
 
 (setq frtmelody-programming-packages
       '(
-        (anaconda-mode :excluded t)
-        (company-anaconda :excluded t)
+        ;; (anaconda-mode :excluded t)
+        ;; (company-anaconda :excluded t)
         css-mode
         paredit
         lispy
@@ -143,11 +143,12 @@
 
 (defun frtmelody-programming/post-init-go-mode ()
   (add-hook 'before-save-hook 'gofmt-before-save)
-   (add-hook 'go-mode-hook
-          (lambda ()
-            (set (make-local-variable 'company-backends) '(company-ycmd))
-            (company-mode)
-            ))
+   ;; (add-hook 'go-mode-hook
+   ;;        (lambda ()
+   ;;          (set (make-local-variable 'company-backends) '(company-ycmd))
+   ;;          (company-mode)
+   ;;          ))
+  (add-hook 'go-mode-hook 'ycmd-mode)
 )
 
 (defun frtmelody-programming/post-init-js-doc ()
@@ -305,14 +306,15 @@
   (progn
     (add-hook 'js2-mode-hook 'my-setup-develop-environment)
     (add-hook 'web-mode-hook 'my-setup-develop-environment)
+    (add-hook 'js2-mode-hook 'ycmd-mode)
 
     (spacemacs|define-jump-handlers js2-mode)
     (add-hook 'spacemacs-jump-handlers-js2-mode 'etags-select-find-tag-at-point)
 
-    (setq company-backends-js2-mode '((company-dabbrev-code :with company-keywords company-etags)
-                                      company-files company-dabbrev))
+    ;; (setq company-backends-js2-mode '((company-dabbrev-code :with company-keywords company-etags)
+    ;;                                   company-files company-dabbrev))
 
-    (frtmelody|toggle-company-backends company-tern)
+    ;; (frtmelody|toggle-company-backends company-tern)
 
     (spacemacs/set-leader-keys-for-major-mode 'js2-mode
       "tb" 'frtmelody/company-toggle-company-tern)
@@ -441,6 +443,7 @@
 
 (defun frtmelody-programming/post-init-cc-mode ()
   (progn
+    (add-hook 'c++-mode-hook 'ycmd-mode)
     (setq company-backends-c-mode-common '((company-dabbrev-code :with company-keywords company-gtags company-etags)
                                            company-files company-dabbrev))
     (spacemacs/set-leader-keys-for-major-mode 'c++-mode
@@ -503,16 +506,16 @@
     (setq ycmd-tag-files 'auto)
     (setq ycmd-request-message-level -1)
 
-    (frtmelody|toggle-company-backends company-ycmd)
-    ;; (setq-local company-backends (push 'company-ycmd company-backends))
     ;; (eval-after-load 'ycmd
     ;;   '(spacemacs|hide-lighter ycmd-mode))
+    (message "post init ycmd")
     (spacemacs/set-leader-keys-for-major-mode 'prog-mode "tb" 'frtmelody/company-toggle-company-ycmd)))
 
 (defun frtmelody-programming/post-init-company-ycmd ()
     (push 'company-ycmd company-backends-js2-mode)
     (push 'company-ycmd company-backends-python-mode)
-    (push 'company-ycmd company-backends-c++-mode)
+    (push 'company-ycmd company-backends-rust-mode)
+    (push 'company-ycmd company-backends-go-mode)
   )
 
 ;; when many project has the need to use tags, I will give etags-table and etags-update a try

@@ -102,6 +102,7 @@ values."
      (c-c++ :variables
             c-c++-default-mode-for-headers 'c++-mode)
      frtmelody
+     imenu-list
      (chinese :packages youdao-dictionary fcitx
               :variables chinese-enable-fcitx t
               chinese-enable-youdao-dict t))
@@ -115,6 +116,8 @@ values."
    dotspacemacs-excluded-packages
    '(
      spaceline
+     ;; anaconda-mode
+     ;; company-anaconda
       ;; magit-gh-pulls magit-gitflow org-projectile evil-mc realgud
       ;; evil-args evil-ediff evil-exchange evil-unimpaired
       ;; evil-indent-plus volatile-highlights smartparens
