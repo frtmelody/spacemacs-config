@@ -16,6 +16,8 @@
       '(
         ;; (anaconda-mode :excluded t)
         ;; (company-anaconda :excluded t)
+        (company-go :exclude t)
+        (go-eldoc :exclude t)
         css-mode
         paredit
         lispy

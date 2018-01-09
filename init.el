@@ -36,7 +36,10 @@ values."
       better-defaults-move-to-beginning-of-code-first t
       better-defaults-move-to-end-of-code-first nil)
      ranger
-     colors
+     (colors :variables colors-colorize-identifiers 'variables
+             colors-enable-nyan-cat-progress-bar t
+             )
+     themes-megapack
      prodigy
      search-engine
      graphviz
@@ -116,6 +119,8 @@ values."
    dotspacemacs-excluded-packages
    '(
      spaceline
+     company-go
+     go-eldoc
      ;; anaconda-mode
      ;; company-anaconda
       ;; magit-gh-pulls magit-gitflow org-projectile evil-mc realgud
@@ -199,8 +204,13 @@ values."
    ;; with 2 themes variants, one dark and one light)
    ;; dotspacemacs-themes '(doom-one-light
    ;;                       doom-one)
-   dotspacemacs-themes '(solarized-light
-                        solarized-dark)
+   dotspacemacs-themes '(
+
+                         (modern-solarizedlight :location (recipe :fetcher github :repo "fuxialexander/modern-light-theme"))
+                         solarized-light
+                         spacemacs-dark
+                         spacemacs-light
+                         solarized-dark)
    ;; If non nil the cursor color matches the state color in GUI Emacs.
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
@@ -388,6 +398,7 @@ values."
   ;; (global-company-mode t)
   ;; (setq debug-on-error t)
   (set-variable 'ycmd-server-command `("python" ,(expand-file-name "~/.vim/bundle/YouCompleteMe/third_party/ycmd/ycmd/__main__.py")))
+  (set-variable 'ycmd-global-config "~/.vim/ycm_extra_conf.py")
 
   (setq ns-use-srgb-colorspace nil)
   (setq powerline-default-separator 'utf-8)
