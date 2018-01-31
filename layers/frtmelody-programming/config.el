@@ -71,3 +71,5 @@
        (if (eq (car company-backends) ',backend)
            (setq-local company-backends (delete ',backend company-backends))
          (push ',backend company-backends)))))
+
+(add-hook 'prog-mode-hook 'spacemacs/toggle-syntax-checking-on)

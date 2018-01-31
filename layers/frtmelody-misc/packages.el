@@ -44,6 +44,8 @@
         (highlight-global :location (recipe :fetcher github :repo "glen-dai/highlight-global"))
         browse-at-remote
         excorporate
+        counsel-tramp
+        elfeed
         ))
 
 (defun frtmelody-misc/init-browse-at-remote ()
@@ -622,41 +624,20 @@ Search for a search tool in the order provided by `dotspacemacs-search-tools'."
       )))
 
 
+;;*
 (defun frtmelody-misc/post-init-elfeed ()
   (use-package elfeed
     :init
-    (global-set-key (kbd "C-x w") 'elfeed)
+    ;; (global-set-key (kbd "C-x w") 'elfeed)
     :defer t
     :config
     (progn
-
-      (setq elfeed-feeds
-            '("http://nullprogram.com/feed/"
-              "http://z.caudate.me/rss/"
-              "http://irreal.org/blog/?feed=rss2"
-              "http://feeds.feedburner.com/LostInTheTriangles"
-              "http://tonybai.com/feed/"
-              "http://planet.emacsen.org/atom.xml"
-              "http://feeds.feedburner.com/emacsblog"
-              "http://blog.binchen.org/rss.xml"
-              "http://oremacs.com/atom.xml"
-              "http://blog.gemserk.com/feed/"
-              "http://www.masteringemacs.org/feed/"
-              "http://t-machine.org/index.php/feed/"
-              "http://gameenginebook.blogspot.com/feeds/posts/default"
-              "http://feeds.feedburner.com/ruanyifeng"
-              "http://coolshell.cn/feed"
-              "http://blog.devtang.com/atom.xml"
-              "http://emacsist.com/rss"
-              "http://puntoblogspot.blogspot.com/feeds/2507074905876002529/comments/default"
-              "http://angelic-sedition.github.io/atom.xml"))
-
       ;; (evilify elfeed-search-mode elfeed-search-mode-map)
-      (evilified-state-evilify-map elfeed-search-mode-map
-        :mode elfeed-search-mode
-        :bindings
-        "G" 'elfeed-update
-        "g" 'elfeed-search-update--force)
+      ;; (evilified-state-evilify-map elfeed-search-mode-map
+      ;;   :mode elfeed-search-mode
+      ;;   :bindings
+      ;;   "G" 'elfeed-update
+      ;;   "g" 'elfeed-search-update--force)
 
       (defun frtmelody/elfeed-mark-all-as-read ()
         (interactive)
@@ -923,7 +904,7 @@ Search for a search tool in the order provided by `dotspacemacs-search-tools'."
       ;;(setq ffip-project-file ".svn")
       ;; in MacOS X, the search file command is CMD+p
       ;; for this project, I'm only interested certain types of files
-      (setq-default ffip-patterns '("*.html" "*.js" "*.css" "*.java" "*.xml" "*.cpp" "*.h" "*.c" "*.mm" "*.m" "*.el", "*.py"))
+      (setq-default ffip-patterns '("*.html" "*.js" "*.css" "*.java" "*.xml" "*.cpp" "*.h" "*.c" "*.mm" "*.m" "*.el", "*.py", "*.go", "*.sh"))
       ;; if the full path of current file is under SUBPROJECT1 or SUBPROJECT2
       ;; OR if I'm reading my personal issue track document,
       (defadvice find-file-in-project (before my-find-file-in-project activate compile)
@@ -1185,3 +1166,65 @@ Search for a search tool in the order provided by `dotspacemacs-search-tools'."
         (evil-define-key 'normal markdown-mode-map (kbd "TAB") 'markdown-cycle)
         ))
     ))
+
+(defun frtmelody-misc/init-counsel-tramp()
+  (use-package counsel-tramp
+    :defer t
+    :config
+    )
+  (with-eval-after-load 'tramp
+    (progn
+      (setenv "SHELL" "/bin/bash")
+      (setq tramp-default-method "ssh")
+      (setq tramp-verbose 10)
+      ;; (setq tramp-shell-prompt-pattern "^[^$>\n]*[#$%>] *\\(\[[0-9;]*[a-zA-Z] *\\)*")
+      ;; (setq tramp-shell-prompt-pattern "^.*[#$%>] *")
+      (add-hook 'counsel-tramp-pre-command-hook '(lambda () (global-aggressive-indent-mode 0)
+                                                   ;; (projectle-mode 0)
+                                                   (editorconfig-mode 0)))
+      (add-hook 'counsel-tramp-quit-hooK '(lambda () (global-aggressive-indent-mode 1)
+                                            ;; (projectile-mode 1)
+                                            (editorconfig-mode 1)))
+      (define-key global-map (kbd "C-c s") 'counsel-tramp)
+      )
+    )
+  )
+
+
+(defun frtmelody-misc/remote-shell (host)
+  (interactive (list (read-from-minibuffer "Host: " "dev_office") ))
+  (let ((default-directory (format "/ssh:%s:" host)))
+        (shell)))
+
+
+;; https://github.com/TikhonJelvis/dotfiles/blob/e3877a96c7dbb42e34ddf6a907449fc05b3ed108/.emacs
+(defun frtmelody-misc/new-shell (name)
+  "Opens a new shell buffer with the given name in
+asterisks (*name*) in the current directory with and changes the
+prompt to name>."
+  (interactive "sName: ")
+  (when (equal name "")
+    (setq name (file-name-base (directory-file-name default-directory))))
+  (pop-to-buffer (concat "<*" name "*>"))
+  (unless (eq major-mode 'shell-mode)
+    (shell (current-buffer))
+    (sleep-for 0 200)
+    (delete-region (point-min) (point-max))
+    (comint-simple-send (get-buffer-process (current-buffer))
+                        (concat "export PS1=\"\033[33m" name "\033[0m:\033[35m\\W\033[0m>\""))))
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;shortcut functions
+(defun frtmelody-misc/elfeed-show-all ()
+  (interactive)
+  (bookmark-maybe-load-default-file)
+  (bookmark-jump "elfeed-all"))
+(defun frtmelody-misc/elfeed-show-emacs ()
+  (interactive)
+  (bookmark-maybe-load-default-file)
+  (bookmark-jump "elfeed-emacs"))
+(defun frtmelody-misc/elfeed-show-daily ()
+  (interactive)
+  (bookmark-maybe-load-default-file)
+  (bookmark-jump "elfeed-daily"))

@@ -14,10 +14,6 @@
 
 (setq frtmelody-programming-packages
       '(
-        ;; (anaconda-mode :excluded t)
-        ;; (company-anaconda :excluded t)
-        (company-go :exclude t)
-        (go-eldoc :exclude t)
         css-mode
         paredit
         lispy
@@ -52,9 +48,10 @@
         ;; company-flx
         ;; editorconfig
         robe
+
         ))
 
-(add-hook 'prog-mode-hook 'spacemacs/toggle-syntax-checking-on)
+
 (defun frtmelody-programming/post-init-robe ()
   (progn
     (add-hook 'inf-ruby-mode-hook 'spacemacs/toggle-auto-completion-on)
@@ -147,7 +144,7 @@
   (add-hook 'before-save-hook 'gofmt-before-save)
    ;; (add-hook 'go-mode-hook
    ;;        (lambda ()
-   ;;          (set (make-local-variable 'company-backends) '(company-ycmd))
+   ;;          (set (make-local-variable 'company-backends) '(company-go))
    ;;          (company-mode)
    ;;          ))
   (add-hook 'go-mode-hook 'ycmd-mode)
@@ -597,3 +594,4 @@
     (setq company-c-headers-path-user
           (quote
            ("/Users/melody/cocos2d-x/cocos/platform" "/Users/melody/cocos2d-x/cocos" "." "/Users/melody/cocos2d-x/cocos/audio/include/")))))
+

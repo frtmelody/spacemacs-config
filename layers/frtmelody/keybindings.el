@@ -53,7 +53,7 @@
 ;; (define-key ctl-x-map "\C-t" #'transpose-chars)
 
 (when (spacemacs/system-is-mac)
- (spacemacs/set-leader-keys "o!" 'frtmelody/iterm-shell-command))
+  (spacemacs/set-leader-keys "o!" 'frtmelody/iterm-shell-command))
 
 (spacemacs|add-toggle toggle-shadowsocks-proxy-mode
   :status shadowsocks-proxy-mode
@@ -63,8 +63,8 @@
   :evil-leader "ots")
 
 (global-set-key (kbd "s-s") 'save-buffer)
-;; (bind-key* "s-k" 'scroll-other-window-down)
-;; (bind-key* "s-j"  'scroll-other-window)
+(bind-key* "s-k" 'scroll-other-window-down)
+(bind-key* "s-j"  'scroll-other-window)
 (bind-key* "C-c /" 'company-files)
 ;; (bind-key* "s-r" 'frtmelody/browser-refresh--chrome-applescript)
 (bind-key* "s-;" 'frtmelody/insert-semicolon-at-the-end-of-this-line)

@@ -64,14 +64,14 @@ values."
           osx-command-as 'super)
      restclient
      (gtags :disabled-for clojure emacs-lisp javascript latex python shell-scripts)
-     (shell :variables shell-default-shell 'eshell)
+     (shell :variables
+            shell-default-shell 'multi-term
+            ;; shell-default-term-shell "/bin/zsh"
+            shell-default-height 30
+            )
      docker
      latex
      deft
-     markdown
-     ;; (treemacs :variables
-     ;;  treemacs-use-follow-mode t
-     ;;  treemacs-use-filewatch-mode t)
      (org :variables org-want-todo-bindings t)
      yaml
      react
@@ -79,22 +79,15 @@ values."
              python-enable-yapf-format-on-save t
              python-test-runner '(nose pytest))
 
-     (mu4e :variables
-           mu4e-installation-path "/usr/local/Cellar/mu/0.9.18_1/share/emacs/site-lisp/"
-           mu4e-enable-notifications t
-           mu4e-enable-mode-line t
-           mu4e-spacemacs-layout-name "@Mu4e"
-           mu4e-spacemacs-layout-binding "m"
-           )
      (go :variables gofmt-command "goimports")
-     ;; (ruby :variables ruby-version-manager 'chruby)
-     ;; ruby-on-rails
+     protobuf
      lua
      html
      rust
      javascript
      java
      ycmd
+     (elfeed :variables rmh-elfeed-org-files (list "~/Documents/feed.org"))
      (typescript :variables
                  typescript-fmt-on-save nil
                  typescript-fmt-tool 'typescript-formatter)
@@ -104,7 +97,6 @@ values."
      (c-c++ :variables
             c-c++-default-mode-for-headers 'c++-mode)
      frtmelody
-     imenu-list
      (chinese :packages youdao-dictionary fcitx
               :variables chinese-enable-fcitx t
               chinese-enable-youdao-dict t))
@@ -118,8 +110,6 @@ values."
    dotspacemacs-excluded-packages
    '(
      spaceline
-     company-go
-     go-eldoc
      anaconda-mode
      company-anaconda
      magit-gh-pulls magit-gitflow org-projectile evil-mc realgud
@@ -390,6 +380,7 @@ values."
   (setq warning-minimum-level :error)
   ;; hack for remove purpose mode
   (setq purpose-mode nil)
+
   )
 
 (defun dotspacemacs/user-config ()
@@ -401,6 +392,8 @@ values."
 
   (setq ns-use-srgb-colorspace nil)
   (setq powerline-default-separator 'utf-8)
+  (setq multi-term-program "/bin/zsh")
+  (setq system-uses-terminfo nil)
 
   (with-eval-after-load 'mu4e-alert
     ;; Enable Desktop notifications

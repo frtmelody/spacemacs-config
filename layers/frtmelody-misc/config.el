@@ -4,8 +4,7 @@
 ;;
 ;; Author: frtmelody <frtmelody@gmail.com>
 ;; URL: https://github.com/frtmelody/spacemacs-private
-;;
-;; This file is not part of GNU Emacs.
+;; ;; This file is not part of GNU Emacs.
 ;;
 ;;; License: GPLv3
 

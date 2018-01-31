@@ -186,3 +186,12 @@ Single Capitals as you type."
 (setq backup-by-copying t
       make-backup-files nil
       create-lockfiles nil)
+
+
+(add-hook 'term-mode-hook
+          (lambda ()
+            (setq show-trailing-whitespace nil)
+            (add-to-list 'term-bind-key-alist '("M-[" . multi-term-prev))
+            (add-to-list 'term-bind-key-alist '("M-]" . multi-term-next))
+            (setq term-buffer-maximum-size 0)
+            ))
