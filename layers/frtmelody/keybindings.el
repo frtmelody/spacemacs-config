@@ -88,6 +88,7 @@
 
 (define-key evil-normal-state-map (kbd "-") nil)
 
+
 (bb/define-key evil-normal-state-map
   "+" 'evil-numbers/inc-at-pt
   "-" 'evil-numbers/dec-at-pt

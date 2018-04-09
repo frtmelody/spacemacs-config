@@ -1,4 +1,3 @@
-; -*- lexical-binding: t -*-
 ;;; packages.el --- frtmelody Layer packages File for Spacemacs
 ;;
 ;; Copyright (c) 2014-2016 frtmelody
@@ -12,11 +11,11 @@
 
 (defconst frtmelody-better-defaults-packages
   '(
-    (dired-mode :location built-in)
+    ;; (dired-mode :location built-in)
+    (dired :location built-in)
     (profiler :location built-in)
-    (recentf :location built-in)
-    )
-)
+    (recentf :location built-in))
+  )
 
 (defun frtmelody-better-defaults/post-init-recentf ()
   (progn
@@ -41,8 +40,10 @@
             ".*png$"))
     (setq recentf-max-saved-items 2048)))
 
-(defun frtmelody-better-defaults/init-dired-mode ()
-  (use-package dired-mode
+
+
+(defun frtmelody-better-defaults/post-init-dired ()
+  (use-package dired
     :defer t
     :init
     (progn
@@ -70,7 +71,7 @@
       (setq dired-recursive-deletes 'always)
       (setq dired-recursive-copies 'always)
 
-      (defun ora-ediff-files ()
+      (defun frtmelody-ediff-files ()
         (interactive)
         (let ((files (dired-get-marked-files))
               (wnd (current-window-configuration)))
@@ -90,28 +91,35 @@
                             (set-window-configuration wnd))))
             (error "no more than 2 files should be marked"))))
 
-      (define-key dired-mode-map "e" 'ora-ediff-files)
 
+      (define-key dired-mode-map "e" 'frtmelody-ediff-files)
       (defvar dired-filelist-cmd
         '(("vlc" "-L")))
 
-      ;; FIXME: evilify dired mode will lead to startup warnings
-      (evilified-state-evilify-map dired-mode-map
-        :mode dired-mode
-        :bindings
-        (kbd "C-k") 'frtmelody/dired-up-directory
-        "<RET>" 'dired-find-alternate-file
-        "E" 'dired-toggle-read-only
-        "C" 'dired-do-copy
-        "<mouse-2>" 'my-dired-find-file
-        "`" 'dired-open-term
-        "p" 'peep-dired-prev-file
-        "n" 'peep-dired-next-file
-        "z" 'dired-get-size
-        "c" 'dired-copy-file-here
-        "J" 'counsel-find-file
-        "f" 'frtmelody/open-file-with-projectile-or-counsel-git
-        ")" 'dired-omit-mode)
+      (add-hook 'dired-mode-hook '(lambda ()
+                                    (with-eval-after-load 'dired
+                                      (evilified-state-evilify-map dired-mode-map
+                                        :mode dired-mode
+                                        :bindings
+                                        (kbd "C-k") 'frtmelody/dired-up-directory
+                                        (kbd "~")   '(lambda ()(interactive) (find-alternate-file "~/"))
+                                        "0"         'dired-back-to-start-of-files
+                                        "<RET>" 'dired-find-alternate-file
+                                        "E" 'dired-toggle-read-only
+                                        "C" 'dired-do-copy
+                                        "<mouse-2>" 'my-dired-find-file
+                                        "`" 'dired-open-term
+                                        "p" 'peep-dired-prev-file
+                                        "n" 'peep-dired-next-file
+                                        "z" 'dired-get-size
+                                        "c" 'dired-copy-file-here
+                                        "J" 'counsel-find-file
+                                        "J"         'dired-goto-file
+                                        "f" 'frtmelody/open-file-with-projectile-or-counsel-git
+                                        "gg"        'vinegar/back-to-top
+                                        "G"         'vinegar/jump-to-bottom
+                                        ")" 'dired-omit-mode)
+                                      )))
       )))
 
 

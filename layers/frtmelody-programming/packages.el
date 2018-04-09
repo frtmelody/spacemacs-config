@@ -44,7 +44,7 @@
         dumb-jump
         graphviz-dot-mode
         cider
-        toml-mode
+        ;; toml-mode
         ;; company-flx
         ;; editorconfig
         robe
@@ -186,6 +186,9 @@
 (defun frtmelody-programming/post-init-web-mode ()
   (with-eval-after-load "web-mode"
     (web-mode-toggle-current-element-highlight)
+    (add-to-list 'web-mode-indentation-params '("lineup-args" . nil))
+    (add-to-list 'web-mode-indentation-params '("lineup-concats" . nil))
+    (add-to-list 'web-mode-indentation-params '("lineup-calls" . nil))
     (web-mode-dom-errors-show))
   (setq company-backends-web-mode '((company-dabbrev-code
                                      company-keywords
@@ -344,14 +347,15 @@
         (setq-default js2-auto-indent-p t)
 
         (setq-default js2-bounce-indent nil)
-        (setq-default js-indent-level 4)
-        (setq-default js2-basic-offset 4)
-        (setq-default js-switch-indent-offset 4)
+        (setq-default js-indent-level 2)
+        (setq-default js2-basic-offset 2)
+        (setq-default js-switch-indent-offset 2)
         ;; Let flycheck handle parse errors
         (setq-default js2-mode-show-parse-errors nil)
         (setq-default js2-mode-show-strict-warnings nil)
         (setq-default js2-highlight-external-variables t)
         (setq-default js2-strict-trailing-comma-warning nil)
+        (setq-default css-indent-offset 2)
 
         (add-hook 'web-mode-hook 'my-web-mode-indent-setup)
 
@@ -476,12 +480,12 @@
 
   )
 
-(defun frtmelody-programming/init-toml-mode ()
-  (use-package toml-mode
-    :defer t
-    :init)
-  (add-to-list 'auto-mode-alist '("\\.toml\\'" . toml-mode))
-  )
+;; (defun frtmelody-programming/init-toml-mode ()
+;;   (use-package toml-mode
+;;     :defer t
+;;     :init)
+;;   (add-to-list 'auto-mode-alist '("\\.toml\\'" . toml-mode))
+;;   )
 
 (defun frtmelody-programming/init-flycheck-clojure ()
   (use-package flycheck-clojure

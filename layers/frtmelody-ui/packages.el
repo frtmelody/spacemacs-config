@@ -34,11 +34,11 @@
           doom-themes-enable-italic t) ; if nil, italics is universally disabled
     ))
 
-(defun ztlevi-ui/init-all-the-icons-dired ()
+(defun frtmelody-ui/init-all-the-icons-dired ()
   (use-package all-the-icons-dired
     :defer t))
 
-(defun ztlevi-ui/init-all-the-icons ()
+(defun frtmelody-ui/init-all-the-icons ()
   (use-package all-the-icons
     :defer t))
 
@@ -151,7 +151,7 @@
 
                  " "
 
-                 '(:eval (list (nyan-create)))
+                 ;; '(:eval (list (nyan-create)))
 
                  ;; global-mode-string goes in mode-line-misc-info
                  '(:eval (when (> (window-width) 120)

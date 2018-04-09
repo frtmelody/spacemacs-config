@@ -365,7 +365,12 @@ values."
   (setq configuration-layer--elpa-archives
         '(("melpa-cn" . "https://elpa.emacs-china.org/melpa/")
           ("org-cn"   . "https://elpa.emacs-china.org/org/")
-          ("marmalade"   . "http://marmalade-repo.org/packages/")
+          ("marmalade"   . "https://marmalade-repo.org/packages/")
+          ("gnu-cn"   . "https://elpa.emacs-china.org/gnu/")))
+  (setq configuration-layer-elpa-archives
+        '(("melpa-cn" . "https://elpa.emacs-china.org/melpa/")
+          ("org-cn"   . "https://elpa.emacs-china.org/org/")
+          ("marmalade"   . "https://marmalade-repo.org/packages/")
           ("gnu-cn"   . "https://elpa.emacs-china.org/gnu/")))
 
   ;; https://github.com/syl20bnr/spacemacs/issues/2705
@@ -385,6 +390,7 @@ values."
 
 (defun dotspacemacs/user-config ()
   (eval-after-load 'tramp '(setenv "SHELL" "/bin/bash"))
+
   ;; (global-company-mode t)
   ;; (setq debug-on-error t)
   (set-variable 'ycmd-server-command `("python" ,(expand-file-name "~/.vim/bundle/YouCompleteMe/third_party/ycmd/ycmd/__main__.py")))

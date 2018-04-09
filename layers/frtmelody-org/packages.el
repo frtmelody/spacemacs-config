@@ -14,7 +14,7 @@
 (defconst frtmelody-org-packages
   '(
     (org :location built-in)
-    org-mac-link
+    (org-mac-link :location built-in)
     org-pomodoro
     deft
     (blog-admin :location (recipe
@@ -125,6 +125,7 @@
                                   (local-set-key (kbd "C-c i s")
                                                  'frtmelody/org-insert-src-block)))
       (require 'ox-publish)
+      (require 'ox-confluence)
       (add-to-list 'org-latex-classes '("ctexart" "\\documentclass[11pt]{ctexart}
                                         [NO-DEFAULT-PACKAGES]
                                         \\usepackage[utf8]{inputenc}
@@ -200,7 +201,7 @@
        'org-babel-load-languages
        '((perl . t)
          (ruby . t)
-         (sh . t)
+         (shell . t)
          (dot . t)
          (js . t)
          (latex .t)
@@ -466,4 +467,5 @@ holding contextual information."
     (setq deft-recursive t)
     (setq deft-extension "org")
     (setq deft-directory deft-dir)))
+
 ;;; packages.el ends here
