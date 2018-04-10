@@ -306,8 +306,6 @@
 
 (defun frtmelody-programming/post-init-js2-mode ()
   (progn
-    (add-hook 'js2-mode-hook 'my-setup-develop-environment)
-    (add-hook 'web-mode-hook 'my-setup-develop-environment)
     (add-hook 'js2-mode-hook 'ycmd-mode)
 
     (spacemacs|define-jump-handlers js2-mode)
@@ -316,7 +314,7 @@
     ;; (setq company-backends-js2-mode '((company-dabbrev-code :with company-keywords company-etags)
     ;;                                   company-files company-dabbrev))
 
-    ;; (frtmelody|toggle-company-backends company-tern)
+    (frtmelody|toggle-company-backends company-tern)
 
     (spacemacs/set-leader-keys-for-major-mode 'js2-mode
       "tb" 'frtmelody/company-toggle-company-tern)
@@ -451,10 +449,6 @@
                                            company-files company-dabbrev))
     (spacemacs/set-leader-keys-for-major-mode 'c++-mode
       "gd" 'etags-select-find-tag-at-point)
-
-
-    (add-hook 'c++-mode-hook 'my-setup-develop-environment)
-    (add-hook 'c-mode-hook 'my-setup-develop-environment)
 
 
     ;; http://stackoverflow.com/questions/23553881/emacs-indenting-of-c11-lambda-functions-cc-mode

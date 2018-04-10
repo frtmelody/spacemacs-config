@@ -15,4 +15,5 @@
                                       frtmelody-ui
                                       frtmelody-org
                                       frtmelody-better-defaults
+                                      rjsx
                                       ))

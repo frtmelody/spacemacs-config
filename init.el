@@ -74,7 +74,6 @@ values."
      deft
      (org :variables org-want-todo-bindings t)
      yaml
-     react
      (python :variables
              python-enable-yapf-format-on-save t
              python-test-runner '(nose pytest))
@@ -194,7 +193,7 @@ values."
    ;; dotspacemacs-themes '(doom-one-light
    ;;                       doom-one)
    dotspacemacs-themes '(
-
+                         ;; doom-one-light
                          (modern-solarizedlight :location (recipe :fetcher github :repo "fuxialexander/modern-light-theme"))
                          solarized-light
                          spacemacs-dark
@@ -390,6 +389,7 @@ values."
 
 (defun dotspacemacs/user-config ()
   (eval-after-load 'tramp '(setenv "SHELL" "/bin/bash"))
+  ;; (setq tags-table-list (list (expand-file-name "project/TAGS")))
 
   ;; (global-company-mode t)
   ;; (setq debug-on-error t)
