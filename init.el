@@ -450,7 +450,15 @@ values."
 
 (defun dotspacemacs/user-config ()
   (eval-after-load 'tramp '(setenv "SHELL" "/bin/bash"))
-  (evil-ex-define-cmd "q[uit]" 'kill-current-buffer )
+
+  (defun frtmelody-kill-buffer-or-close-window ()
+    (interactive)
+      (if (> 2 (length (cl-delete-duplicates (mapcar #'window-buffer (window-list)))))
+          (delete-window)
+        (kill-current-buffer)
+      )
+    )
+  (evil-ex-define-cmd "q[uit]" 'frtmelody-kill-buffer-or-close-window )
 
   ;; (setq debug-on-error t)
   ;; (set-variable 'ycmd-server-command `("python" ,(expand-file-name "~/.vim/bundle/YouCompleteMe/third_party/ycmd/ycmd/__main__.py")))
