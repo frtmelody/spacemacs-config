@@ -17,6 +17,7 @@
         css-mode
         paredit
         lispy
+        cquery
         cmake-font-lock
         cmake-mode
         flycheck
@@ -29,17 +30,17 @@
         yasnippet
         web-mode
         js-doc
+        import-js
+        prettier-js
         go-mode
         lua-mode
         (cc-mode :location built-in)
         ;; flycheck-clojure
         etags-select
-        ycmd
         (python :location built-in)
         (emacs-lisp :location built-in)
         ;; clojure-mode
         company
-        company-ycmd
         (eldoc :location built-in)
         dumb-jump
         graphviz-dot-mode
@@ -48,9 +49,45 @@
         ;; company-flx
         ;; editorconfig
         robe
+        counsel-etags
+        company-lsp
+        lsp-ui
+        (lsp-imenu :location built-in)
+        lsp-javascript-typescript
+        (lsp-javascript-flow :location built-in)
+        (lsp-typescript :location built-in)
+        lispy
 
         ))
 
+;; configuration scheme
+;; https://prettier.io/docs/en/configuration.html#configuration-schema
+(defun frtmelody-programming/init-prettier-js ()
+  (use-package prettier-js
+    :defer t
+    :init
+    ;; prettier js
+    (spacemacs/add-to-hooks 'prettier-js-mode '(js2-mode-hook
+                                                typescript-mode-hook
+                                                rjsx-mode-hook
+                                                json-mode-hook
+                                                css-mode-hook
+                                                markdown-mode-hook
+                                                gfm-mode-hook))
+    :config
+    (progn
+      (setq prettier-js-show-errors (quote echo))
+
+      (spacemacs|diminish prettier-js-mode " Ⓟ" " P")
+
+      ;; bind key
+      (spacemacs/set-leader-keys-for-major-mode 'js2-mode "=" 'prettier-js)
+      (spacemacs/set-leader-keys-for-major-mode 'typescript-mode "=" 'prettier-js)
+      (spacemacs/set-leader-keys-for-major-mode 'rjsx-mode "=" 'prettier-js)
+      (spacemacs/set-leader-keys-for-major-mode 'json-mode "=" 'prettier-js)
+      (spacemacs/set-leader-keys-for-major-mode 'css-mode "=" 'prettier-js)
+      (spacemacs/set-leader-keys-for-major-mode 'markdown-mode "=" 'prettier-js)
+      (spacemacs/set-leader-keys-for-major-mode 'gfm-mode "=" 'prettier-js))))
 
 (defun frtmelody-programming/post-init-robe ()
   (progn
@@ -132,22 +169,16 @@
 
 (defun frtmelody-programming/post-init-python ()
   (add-hook 'python-mode-hook #'(lambda () (modify-syntax-entry ?_ "w")))
-  ;; if you use pyton3, then you could comment the following line
-  (add-hook 'python-mode-hook
-            (lambda ()
-              ;; I was seeing tramp slowdowns when ycmd was active...
-              (unless (tramp-tramp-file-p (buffer-file-name (current-buffer)))
-                (ycmd-mode))))
-  (setq python-shell-interpreter "python"))
+  (setq python-shell-interpreter "python")
+ )
 
 (defun frtmelody-programming/post-init-go-mode ()
   (add-hook 'before-save-hook 'gofmt-before-save)
-   ;; (add-hook 'go-mode-hook
-   ;;        (lambda ()
-   ;;          (set (make-local-variable 'company-backends) '(company-go))
-   ;;          (company-mode)
-   ;;          ))
-  (add-hook 'go-mode-hook 'ycmd-mode)
+   (add-hook 'go-mode-hook
+          (lambda ()
+            (set (make-local-variable 'company-backends) '(company-go))
+            (company-mode)
+            ))
 )
 
 (defun frtmelody-programming/post-init-js-doc ()
@@ -166,22 +197,6 @@
     :config
     (spacemacs|hide-lighter ctags-auto-update-mode)))
 
-;; nodejs-repl is much better now.
-;; (defun frtmelody-programming/init-js-comint ()
-;;   (use-package js-comint
-;;     :init
-;;     (progn
-;;       ;; http://stackoverflow.com/questions/13862471/using-node-js-with-js-comint-in-emacs
-;;       (setq inferior-js-mode-hook
-;;             (lambda ()
-;;               ;; We like nice colors
-;;               (ansi-color-for-comint-mode-on)
-;;               ;; Deal with some prompt nonsense
-;;               (add-to-list
-;;                'comint-preoutput-filter-functions
-;;                (lambda (output)
-;;                  (replace-regexp-in-string "\033\\[[0-9]+[GKJ]" "" output)))))
-;;       (setq inferior-js-program-command "node"))))
 
 (defun frtmelody-programming/post-init-web-mode ()
   (with-eval-after-load "web-mode"
@@ -290,8 +305,14 @@
 (defun frtmelody-programming/post-init-flycheck ()
   (with-eval-after-load 'flycheck
     (progn
-      (setq flycheck-display-errors-delay 0.9)
-      (setq flycheck-idle-change-delay 2.0)
+      ;; (setq flycheck-display-errors-delay 0.9)
+      ;; (setq flycheck-idle-change-delay 2.0)
+      ;; disable jshint since we prefer eslint checking
+      ;; disable json-jsonlist checking for json files
+      (setq-default flycheck-disabled-checkers
+                    (append flycheck-disabled-checkers
+                            '(javascript-jshint
+                              json-jsonlist)))
       )))
 
 (defun frtmelody-programming/post-init-eldoc ()
@@ -305,80 +326,18 @@
       "r<" 'js2r-forward-barf)))
 
 (defun frtmelody-programming/post-init-js2-mode ()
-  (progn
-    (add-hook 'js2-mode-hook 'ycmd-mode)
-
-    (spacemacs|define-jump-handlers js2-mode)
-    (add-hook 'spacemacs-jump-handlers-js2-mode 'etags-select-find-tag-at-point)
-
-    ;; (setq company-backends-js2-mode '((company-dabbrev-code :with company-keywords company-etags)
-    ;;                                   company-files company-dabbrev))
-
-    (frtmelody|toggle-company-backends company-tern)
-
-    (spacemacs/set-leader-keys-for-major-mode 'js2-mode
-      "tb" 'frtmelody/company-toggle-company-tern)
-
-    (add-hook 'js2-mode-hook 'my-js2-mode-hook)
-
-    ;; add your own keywords highlight here
-    (font-lock-add-keywords 'js2-mode
-                            '(("\\<\\(cc\\)\\>" 1 font-lock-type-face)))
-
-    (spacemacs/declare-prefix-for-mode 'js2-mode "ms" "repl")
-
-    (with-eval-after-load 'js2-mode
-      (progn
-        ;; these mode related variables must be in eval-after-load
-        ;; https://github.com/magnars/.emacs.d/blob/master/settings/setup-js2-mode.el
-        (setq-default js2-allow-rhino-new-expr-initializer nil)
-        (setq-default js2-auto-indent-p nil)
-        (setq-default js2-enter-indents-newline nil)
-        (setq-default js2-global-externs '("module" "ccui" "require" "buster" "sinon" "assert" "refute" "setTimeout" "clearTimeout" "setInterval" "clearInterval" "location" "__dirname" "console" "JSON"))
-        (setq-default js2-idle-timer-delay 0.2)
-        (setq-default js2-mirror-mode nil)
-        (setq-default js2-strict-inconsistent-return-warning nil)
-        (setq-default js2-include-rhino-externs nil)
-        (setq-default js2-include-gears-externs nil)
-        (setq-default js2-concat-multiline-strings 'eol)
-        (setq-default js2-rebind-eol-bol-keys nil)
-        (setq-default js2-auto-indent-p t)
-
-        (setq-default js2-bounce-indent nil)
-        (setq-default js-indent-level 2)
-        (setq-default js2-basic-offset 2)
-        (setq-default js-switch-indent-offset 2)
-        ;; Let flycheck handle parse errors
-        (setq-default js2-mode-show-parse-errors nil)
-        (setq-default js2-mode-show-strict-warnings nil)
-        (setq-default js2-highlight-external-variables t)
-        (setq-default js2-strict-trailing-comma-warning nil)
-        (setq-default css-indent-offset 2)
-
-        (add-hook 'web-mode-hook 'my-web-mode-indent-setup)
-
-        (spacemacs/set-leader-keys-for-major-mode 'js2-mode
-          "ti" 'my-toggle-web-indent)
-        (spacemacs/set-leader-keys-for-major-mode 'js-mode
-          "ti" 'my-toggle-web-indent)
-        (spacemacs/set-leader-keys-for-major-mode 'web-mode
-          "ti" 'my-toggle-web-indent)
-        (spacemacs/set-leader-keys-for-major-mode 'css-mode
-          "ti" 'my-toggle-web-indent)
-
-        (spacemacs/declare-prefix-for-mode 'js2-mode "mt" "toggle")
-        (spacemacs/declare-prefix-for-mode 'js-mode "mt" "toggle")
-        (spacemacs/declare-prefix-for-mode 'web-mode "mt" "toggle")
-        (spacemacs/declare-prefix-for-mode 'css-mode "mt" "toggle")
-
-
-        (eval-after-load 'tern-mode
-          '(spacemacs|hide-lighter tern-mode))
-        ))
-
+  ;; js default variables
+  ;; https://github.com/redguardtoo/emacs.d/blob/master/lisp/init-javascript.el
+  (setq-default js2-strict-inconsistent-return-warning nil ; return <=> return null
+                js2-skip-preprocessor-directives t
+                js2-bounce-indent-p t
+                ;; Let flycheck handle parse errors
+                js2-strict-trailing-comma-warning nil
+                js2-mode-show-parse-errors nil
+                js2-mode-show-strict-warnings nil
+                js2-highlight-external-variables t)
     (evilified-state-evilify js2-error-buffer-mode js2-error-buffer-mode-map)
-
-    ))
+    )
 
 (defun frtmelody-programming/post-init-css-mode ()
   (progn
@@ -444,13 +403,6 @@
 
 (defun frtmelody-programming/post-init-cc-mode ()
   (progn
-    (add-hook 'c++-mode-hook 'ycmd-mode)
-    (setq company-backends-c-mode-common '((company-dabbrev-code :with company-keywords company-gtags company-etags)
-                                           company-files company-dabbrev))
-    (spacemacs/set-leader-keys-for-major-mode 'c++-mode
-      "gd" 'etags-select-find-tag-at-point)
-
-
     ;; http://stackoverflow.com/questions/23553881/emacs-indenting-of-c11-lambda-functions-cc-mode
     (defadvice c-lineup-arglist (around my activate)
       "Improve indentation of continued C++11 lambda function opened as argument."
@@ -469,17 +421,8 @@
     (setq c-default-style "linux") ;; set style to "linux"
     (setq c-basic-offset 4)
     (c-set-offset 'substatement-open 0)
-    (with-eval-after-load 'c++-mode
-      (define-key c++-mode-map (kbd "s-.") 'company-ycmd)))
-
   )
-
-;; (defun frtmelody-programming/init-toml-mode ()
-;;   (use-package toml-mode
-;;     :defer t
-;;     :init)
-;;   (add-to-list 'auto-mode-alist '("\\.toml\\'" . toml-mode))
-;;   )
+ )
 
 (defun frtmelody-programming/init-flycheck-clojure ()
   (use-package flycheck-clojure
@@ -487,33 +430,6 @@
     :init
     (eval-after-load 'flycheck '(flycheck-clojure-setup))))
 
-;; https://github.com/abingham/emacs-ycmd
-(defun frtmelody-programming/ycmd-setup-completion-at-point-function ()
-  "Setup `completion-at-point-functions' for `ycmd-mode'."
-  (add-hook 'completion-at-point-functions
-            #'ycmd-complete-at-point nil :local))
-
-(defun frtmelody-programming/post-init-ycmd ()
-  (progn
-    (set-variable 'ycmd-parse-conditions '(save new-line buffer-focus))
-    (set-variable 'ycmd-idle-change-delay 0.1)
-    (set-variable 'url-show-status nil)
-    (set-variable 'ycmd-request-message-level -1)
-
-    (setq ycmd-tag-files 'auto)
-    (setq ycmd-request-message-level -1)
-
-    ;; (eval-after-load 'ycmd
-    ;;   '(spacemacs|hide-lighter ycmd-mode))
-    (message "post init ycmd")
-    (spacemacs/set-leader-keys-for-major-mode 'prog-mode "tb" 'frtmelody/company-toggle-company-ycmd)))
-
-(defun frtmelody-programming/post-init-company-ycmd ()
-    (push 'company-ycmd company-backends-js2-mode)
-    (push 'company-ycmd company-backends-python-mode)
-    (push 'company-ycmd company-backends-rust-mode)
-    (push 'company-ycmd company-backends-go-mode)
-  )
 
 ;; when many project has the need to use tags, I will give etags-table and etags-update a try
 (defun frtmelody-programming/init-etags-select ()
@@ -561,6 +477,9 @@
 
 (defun frtmelody-programming/post-init-company ()
   (progn
+    (spacemacs|add-company-backends :backends company-lsp :modes js2-mode)
+    (spacemacs|add-company-backends :backends company-lsp :modes rjsx-mode)
+    (spacemacs|add-company-backends :backends company-lsp :modes c-mode-common)
     (setq company-minimum-prefix-length 1
           company-echo-delay 0
           company-tooltip-limit 20
@@ -584,12 +503,119 @@
       (define-key company-active-map (kbd "C-n") #'company-select-next)
       (define-key company-active-map (kbd "C-p") #'company-select-previous)))
   )
-(defun frtmelody-programming/post-init-company-c-headers ()
-  (progn
-    (setq company-c-headers-path-system
-          (quote
-           ("/usr/include/" "/usr/local/include/" "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1")))
-    (setq company-c-headers-path-user
-          (quote
-           ("/Users/melody/cocos2d-x/cocos/platform" "/Users/melody/cocos2d-x/cocos" "." "/Users/melody/cocos2d-x/cocos/audio/include/")))))
 
+(defun frtmelody-programming/init-counsel-etags ()
+  (use-package counsel-etags
+    :defer t
+    :config
+    ;; Don't ask before rereading the TAGS files if they have changed
+    (setq tags-revert-without-query t)
+    ;; Don't warn when TAGS files are large
+    (setq large-file-warning-threshold nil)
+    ;; Setup auto update now
+    (add-hook 'prog-mode-hook
+              (lambda ()
+                (add-hook 'after-save-hook
+                          'counsel-etags-virtual-update-tags 'append 'local)))))
+
+(defun frtmelody-programming/post-init-lsp-ui ()
+  ;; temporary fix for flycheck
+  (setq lsp-ui-flycheck-enable nil)
+
+  ;; set spacemacs-jump-handlers-%S (gd)
+  (my-set-lsp-key-bindings 'python-mode)
+  (my-set-lsp-key-bindings 'js2-mode)
+  (my-set-lsp-key-bindings 'rjsx-mode)
+  (my-set-lsp-key-bindings 'typescript-mode)
+  (my-set-lsp-key-bindings 'c++-mode)
+  (my-set-lsp-key-bindings 'c-mode)
+
+  (define-key evil-normal-state-map (kbd "gr") #'lsp-ui-peek-find-references)
+
+  (define-key lsp-ui-mode-map [remap xref-find-definitions] #'lsp-ui-peek-find-definitions)
+  (define-key lsp-ui-mode-map [remap xref-find-references] #'lsp-ui-peek-find-references)
+  )
+
+(defun frtmelody-programming/post-init-company-lsp ()
+  ;; https://github.com/tigersoldier/company-lsp/issues/30
+  (setq company-lsp-cache-candidates 'auto))
+
+
+(defun frtmelody-programming/init-lsp-imenu ()
+  (use-package lsp-imenu
+    :init
+    (spacemacs/set-leader-keys "bl" 'lsp-ui-imenu)
+    (add-hook 'lsp-after-open-hook 'lsp-enable-imenu)
+    :defer t)
+  )
+
+(defun frtmelody-programming/init-lsp-javascript-typescript ()
+  (use-package lsp-javascript-typescript
+    :commands lsp-javascript-typescript-enable
+    :init
+    (add-hook 'js-mode-hook #'lsp-javascript-typescript-enable)
+    (add-hook 'typescript-mode-hook #'lsp-javascript-typescript-enable) ;; for typescript support
+    (add-hook 'js3-mode-hook #'lsp-javascript-typescript-enable) ;; for js3-mode support
+    (add-hook 'rjsx-mode #'lsp-javascript-typescript-enable) ;; for rjsx-mode support
+    :defer t))
+
+(defun frtmelody-programming/init-lsp-javascript-flow ()
+  (use-package lsp-javascript-flow
+    :commands lsp-javascript-flow-enable
+    :init
+    (add-hook 'js-mode-hook #'lsp-javascript-flow-enable)
+    (add-hook 'js2-mode-hook #'lsp-javascript-flow-enable) ;; for js2-mode support
+    (add-hook 'rjsx-mode #'lsp-javascript-flow-enable) ;; for rjsx-mode support
+    :defer t))
+
+(defun frtmelody-programming/init-lsp-typescript ()
+  (use-package lsp-typescript
+    :commands lsp-typescript-enable
+    :init
+    (add-hook 'js-mode-hook #'lsp-typescript-enable)
+    (add-hook 'js2-mode-hook #'lsp-typescript-enable) ;; for js2-mode support
+    (add-hook 'rjsx-mode #'lsp-typescript-enable) ;; for rjsx-mode support
+    :defer t))
+
+(defun frtmelody-programming/init-cquery ()
+(use-package cquery
+  :defer t
+  :commands lsp-cquery-enable
+  :init (add-hook 'c-mode-common-hook #'lsp-cquery-enable)
+  ))
+
+(defun frtmelody-programming/init-import-js ()
+(use-package import-js
+  :init
+  (progn
+    (run-import-js)
+    (spacemacs/set-leader-keys-for-major-mode 'js2-mode "i" 'import-js-import)
+    (spacemacs/set-leader-keys-for-major-mode 'rjsx-mode "i" 'import-js-import))
+  :defer t))
+
+(defun frtmelody-programming/init-lispy ()
+  (use-package lispy
+    :defer t
+    :init
+    (spacemacs/add-to-hooks (lambda () (lispy-mode)) '(emacs-lisp-mode-hook
+                                                       ielm-mode-hook
+                                                       inferior-emacs-lisp-mode-hook
+                                                       clojure-mode-hook
+                                                       scheme-mode-hook
+                                                       cider-repl-mode-hook))
+    :config
+    (progn
+      (define-key lispy-mode-map (kbd "C-a") 'mwim-beginning-of-code-or-line)
+
+      (push '(cider-repl-mode . ("[`'~@]+" "#" "#\\?@?")) lispy-parens-preceding-syntax-alist)
+
+      (spacemacs|hide-lighter lispy-mode)
+      (define-key lispy-mode-map (kbd "s-j") 'lispy-splice)
+      (define-key lispy-mode-map (kbd "s-k") 'paredit-splice-sexp-killing-backward)
+
+      (with-eval-after-load 'cider-repl
+        (define-key cider-repl-mode-map (kbd "C-s-j") 'cider-repl-newline-and-indent))
+
+      (add-hook
+       'minibuffer-setup-hook
+       'conditionally-enable-lispy))))

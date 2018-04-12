@@ -21,3 +21,36 @@ The forked version is only a few commits behind the original repo, becuase somet
 5. The =Swiper= package sometimes frozen the Emacs UI when you split the window with very long lines. You could use `pkill -SIGUSR2 -i emacs` command line to break the frozen.
 
 ** Happing Hacking
+This Emacs configuration is written for Emacs 25.1+ on Mac OS X 10.11+ and Linux Arch. Windows users may need to tweak the config for themselves.
+1. Clone my configuration:
+   #+BEGIN_SRC shell
+     git clone https://github.com/ztlevi/spacemacs-config.git ~/.spacemacs.d
+   #+END_SRC
+2. Install all-the-icons fonts by ~M-x all-the-icons-install-fonts~. I'm using /Operator Mono Lig/ font(supports ligatures), you could change it under ~dotspacemacs-default-font~.
+3. Language Server Protocol:
+   #+BEGIN_SRC shell
+     # cquery
+     brew tap twlz0ne/homebrew-cquery
+     brew install cquery
+
+     # Javascript
+     npm i -g javascript-typescript-langserver flow-language-server typescript-language-server typescript
+
+     # python
+     pip install python-language-server
+   #+END_SRC
+
+4. Dependencies needed
+   - Install shellcheck, ispell, ripgrep, the_silver_searcher, the_platinum_searcher
+     #+BEGIN_SRC shell
+       brew install shellcheck coreutils ispell watchman gpg2
+     #+END_SRC
+   - npm
+     #+BEGIN_SRC shell
+       npm install -g prettier live-server import-js
+     #+END_SRC
+   - pip
+     Make sure your ~python-shell-interpreter~ and pip is using the same environment (anaconda, python2 or python3). Check it with ~which -a pip ipython~
+     #+BEGIN_SRC shell
+       pip install yapf importmagic epc
+     #+END_SRC

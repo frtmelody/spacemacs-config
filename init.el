@@ -60,9 +60,18 @@ values."
      (auto-completion :variables auto-completion-enable-sort-by-usage t
                       auto-completion-enable-snippets-in-popup t
                       :disabled-for org markdown)
+     ;; (auto-completion :variables
+     ;;                  auto-completion-enable-sort-by-usage t
+     ;;                  auto-completion-return-key-behavior 'complete
+     ;;                  auto-completion-tab-key-behavior 'complete
+     ;;                  auto-completion-enable-snippets-in-popup t
+     ;;                  auto-completion-idle-delay 0.2
+     ;;                  auto-completion-private-snippets-directory "~/.spacemacs.d/snippets"
+     ;;                  :disabled-for org markdown
+     ;;                  )
      (osx :variables osx-dictionary-dictionary-choice "Simplified Chinese - English"
           osx-command-as 'super)
-     restclient
+     ;; restclient
      (gtags :disabled-for clojure emacs-lisp javascript latex python shell-scripts)
      (shell :variables
             shell-default-shell 'multi-term
@@ -72,20 +81,28 @@ values."
      docker
      latex
      deft
+     (chrome :packages (not edit-server gmail-message-mode))
      (org :variables org-want-todo-bindings t)
      yaml
-     (python :variables
+     (python :packages (not anaconda-mode company-anaconda)
+             :variables
              python-enable-yapf-format-on-save t
+             python-backend 'lsp
              python-test-runner '(nose pytest))
-
      (go :variables gofmt-command "goimports")
      protobuf
      lua
      html
+     lsp
      rust
-     javascript
-     java
-     ycmd
+     (javascript :packages (not web-beautify livid-mode company-tern tern)
+                 :variables
+                 node-add-modules-path t
+                 js2-basic-offset 2 ; javascript indent
+                 js-indent-level  2 ; json indent
+                 )
+     (java :packages (not eclim ensime company-emacs-eclim)
+           :variables c-basic-offset 2)
      (elfeed :variables rmh-elfeed-org-files (list "~/Documents/feed.org"))
      (typescript :variables
                  typescript-fmt-on-save nil
@@ -93,8 +110,14 @@ values."
      emacs-lisp
      (clojure :variables clojure-enable-fancify-symbols t)
      racket
-     (c-c++ :variables
-            c-c++-default-mode-for-headers 'c++-mode)
+     (c-c++ :packages (not realgud clang-format disaster rtags company-rtags flycheck-rtags ivy-rtags)
+            :variables
+            c-c++-default-mode-for-headers 'c++-mode
+            c-c++-enable-clang-support t
+            c-c++-enable-clang-format-on-save t
+            c-c++-enable-google-style t
+            c-c++-enable-google-newline t
+            c-c++-enable-c++11 t)
      frtmelody
      (chinese :packages youdao-dictionary fcitx
               :variables chinese-enable-fcitx t
@@ -358,6 +381,44 @@ values."
    ;; delete only whitespace for changed lines or `nil' to disable cleanup.
    ;; (default nil)
    dotspacemacs-whitespace-cleanup 'changed
+
+   ;; Format specification for setting the frame title.
+   ;; %a - the `abbreviated-file-name', or `buffer-name'
+   ;; %t - `projectile-project-name'
+   ;; %I - `invocation-name'
+   ;; %S - `system-name'
+   ;; %U - contents of $USER
+   ;; %b - buffer name
+   ;; %f - visited file name
+   ;; %F - frame name
+   ;; %s - process status
+   ;; %p - percent of buffer above top of window, or Top, Bot or All
+   ;; %P - percent of buffer above bottom of window, perhaps plus Top, or Bot or All
+   ;; %m - mode name
+   ;; %n - Narrow if appropriate
+   ;; %z - mnemonics of buffer, terminal, and keyboard coding systems
+   ;; %Z - like %z, but including the end-of-line format
+   ;; (default "%I@%S")
+   dotspacemacs-frame-title-format "%S@%a"
+
+   ;; Format specification for setting the icon title format
+   ;; (default nil - same as frame-title-format)
+   dotspacemacs-icon-title-format nil
+
+   ;; Delete whitespace while saving buffer. Possible values are `all'
+   ;; to aggressively delete empty line and long sequences of whitespace,
+   ;; `trailing' to delete only the whitespace at end of lines, `changed' to
+   ;; delete only whitespace for changed lines or `nil' to disable cleanup.
+   ;; (default nil)
+   dotspacemacs-whitespace-cleanup `trailing
+
+   ;; Either nil or a number of seconds. If non-nil zone out after the specified
+   ;; number of seconds. (default nil)
+   dotspacemacs-zone-out-when-idle nil
+
+   ;; Run `spacemacs/prettify-org-buffer' when
+   ;; visiting README.org files of Spacemacs.
+   ;; (default nil)
    ))
 
 (defun dotspacemacs/user-init ()
@@ -389,21 +450,16 @@ values."
 
 (defun dotspacemacs/user-config ()
   (eval-after-load 'tramp '(setenv "SHELL" "/bin/bash"))
-  ;; (setq tags-table-list (list (expand-file-name "project/TAGS")))
+  (evil-ex-define-cmd "q[uit]" 'kill-current-buffer )
 
-  ;; (global-company-mode t)
   ;; (setq debug-on-error t)
-  (set-variable 'ycmd-server-command `("python" ,(expand-file-name "~/.vim/bundle/YouCompleteMe/third_party/ycmd/ycmd/__main__.py")))
-  (set-variable 'ycmd-global-config "~/.vim/ycm_extra_conf.py")
+  ;; (set-variable 'ycmd-server-command `("python" ,(expand-file-name "~/.vim/bundle/YouCompleteMe/third_party/ycmd/ycmd/__main__.py")))
+  ;; (set-variable 'ycmd-global-config "~/.vim/ycm_extra_conf.py")
 
   (setq ns-use-srgb-colorspace nil)
   (setq powerline-default-separator 'utf-8)
   (setq multi-term-program "/bin/zsh")
   (setq system-uses-terminfo nil)
-
-  (with-eval-after-load 'mu4e-alert
-    ;; Enable Desktop notifications
-    (mu4e-alert-set-default-style 'notifier))
 
   (global-hl-line-mode 1)
   (unless (display-graphic-p)

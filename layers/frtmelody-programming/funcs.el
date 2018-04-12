@@ -1,6 +1,6 @@
 ;;; funcs.el --- frtmelody Layer packages File for Spacemacs
 ;;
-;; Copyright (c) 2015-2016 frtmelody 
+;; Copyright (c) 2015-2016 frtmelody
 ;;
 ;; Author: frtmelody <frtmelody@gmail.com>
 ;; URL: https://github.com/frtmelody/spacemacs-private
@@ -247,11 +247,7 @@ version 2015-08-21"
         (my-update-tags)
         (message "updated tags after %d seconds." (- (float-time (current-time)) (float-time my-tags-updated-time))))))
 
-
-(defun frtmelody-programming/ycmd-semantic-completion ()
-  "Do a semantic completion with YCMD."
-  (interactive)
-  (company-cancel)
-  (let ((ycmd-force-semantic-completion (not (company-ycmd--in-include))))
-    (setq company-backend 'company-ycmd)
-    (company-manual-begin)))
+(defun my-set-lsp-key-bindings (mode)
+  "Set the key bindings for tern and the given MODE."
+  (add-to-list (intern (format "spacemacs-jump-handlers-%S" mode))
+               '(lsp-ui-peek-find-definitions)))
