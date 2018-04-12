@@ -453,7 +453,7 @@ values."
 
   (defun frtmelody-kill-buffer-or-close-window ()
     (interactive)
-      (if (> 2 (length (cl-delete-duplicates (mapcar #'window-buffer (window-list)))))
+      (if (< 1 (length (cl-delete-duplicates (mapcar #'window-buffer (window-list)))))
           (delete-window)
         (kill-current-buffer)
       )
