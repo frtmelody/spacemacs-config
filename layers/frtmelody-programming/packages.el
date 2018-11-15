@@ -16,13 +16,12 @@
       '(
         css-mode
         paredit
-        lispy
-        cquery
         cmake-font-lock
         cmake-mode
         flycheck
         nodejs-repl
         (nodejs-repl-eval :location local)
+        (ox-confluence-en :location local)
         js2-mode
         js2-refactor
         json-mode
@@ -35,19 +34,14 @@
         go-mode
         lua-mode
         (cc-mode :location built-in)
-        ;; flycheck-clojure
         etags-select
         (python :location built-in)
         (emacs-lisp :location built-in)
-        ;; clojure-mode
         company
         (eldoc :location built-in)
         dumb-jump
         graphviz-dot-mode
         cider
-        ;; toml-mode
-        ;; company-flx
-        ;; editorconfig
         robe
         counsel-etags
         company-lsp
@@ -57,7 +51,7 @@
         (lsp-javascript-flow :location built-in)
         (lsp-typescript :location built-in)
         lispy
-
+        lsp-intellij
         ))
 
 ;; configuration scheme
@@ -174,11 +168,11 @@
 
 (defun frtmelody-programming/post-init-go-mode ()
   (add-hook 'before-save-hook 'gofmt-before-save)
-   (add-hook 'go-mode-hook
-          (lambda ()
-            (set (make-local-variable 'company-backends) '(company-go))
-            (company-mode)
-            ))
+   ;; (add-hook 'go-mode-hook
+   ;;        (lambda ()
+   ;;          (set (make-local-variable 'company-backends) '(company-go))
+   ;;          (company-mode)
+   ;;          ))
 )
 
 (defun frtmelody-programming/post-init-js-doc ()
@@ -251,7 +245,10 @@
     :defer t))
 
 (defun frtmelody-programming/init-flycheck-package ()
-  (use-package flycheck-package))
+  (use-package flycheck-package)
+  (add-hook 'java-mode-hook 'flycheck-mode)
+  (add-hook 'kotlin-mode-hook 'flycheck-mode)
+  )
 
 (defun frtmelody-programming/init-lispy ()
   (use-package lispy
@@ -484,6 +481,8 @@
           company-echo-delay 0
           company-tooltip-limit 20
           company-idle-delay 0.08
+          company-lsp-async t
+          company-lsp-cache-candidates t
           company-begin-commands '(self-insert-command)
           )
 
@@ -493,11 +492,8 @@
   ;; define company-mode keybindings
   (with-eval-after-load 'company
     (progn
-      (bb/define-key company-active-map
-        (kbd "C-w") 'evil-delete-backward-word)
-
-      (bb/define-key company-active-map
-        (kbd "s-w") 'company-show-location)
+      (define-key company-active-map (kbd "C-w") 'evil-delete-backward-word)
+      (define-key company-active-map (kbd "s-w") 'company-show-location)
       (define-key company-active-map (kbd "M-n") nil)
       (define-key company-active-map (kbd "M-p") nil)
       (define-key company-active-map (kbd "C-n") #'company-select-next)
@@ -532,13 +528,15 @@
 
   (define-key evil-normal-state-map (kbd "gr") #'lsp-ui-peek-find-references)
 
-  (define-key lsp-ui-mode-map [remap xref-find-definitions] #'lsp-ui-peek-find-definitions)
-  (define-key lsp-ui-mode-map [remap xref-find-references] #'lsp-ui-peek-find-references)
+  ;; (define-key lsp-ui-mode-map [remap xref-find-definitions] #'lsp-ui-peek-find-definitions)
+  ;; (define-key lsp-ui-mode-map [remap xref-find-references] #'lsp-ui-peek-find-references)
   )
 
 (defun frtmelody-programming/post-init-company-lsp ()
   ;; https://github.com/tigersoldier/company-lsp/issues/30
-  (setq company-lsp-cache-candidates 'auto))
+(setq company-lsp-enable-snippet t
+      company-lsp-cache-candidates 'auto
+      company-lsp-cache-candidates t))
 
 
 (defun frtmelody-programming/init-lsp-imenu ()
@@ -580,7 +578,6 @@
 (defun frtmelody-programming/init-cquery ()
 (use-package cquery
   :defer t
-  :commands lsp-cquery-enable
   :init (add-hook 'c-mode-common-hook #'lsp-cquery-enable)
   ))
 
@@ -619,3 +616,11 @@
       (add-hook
        'minibuffer-setup-hook
        'conditionally-enable-lispy))))
+
+(defun frtmelody-programming/init-ox-confluence-en ()
+  (use-package ox-confluence-en)
+    )
+
+(defun frtmelody-programming/post-init-lsp-intellij ()
+  (spacemacs|define-jump-handlers java-mode)
+  (spacemacs//setup-lsp-jump-handler 'java-mode))
