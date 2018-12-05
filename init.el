@@ -84,21 +84,25 @@ values."
      (chrome :packages (not edit-server gmail-message-mode))
      (org :variables org-want-todo-bindings t)
      yaml
+     ;; (lsp :variables
+     ;;      lsp-ui-sideline-enable nil
+     ;;      lsp-ui-doc-include-signature t
+     ;;      lsp-ui-remap-xref-keybindings t)
      (python :variables
              python-sort-imports-on-save t
              python-enable-yapf-format-on-save t
-             python-backend 'lsp
+             python-backend 'ycmd
              python-test-runner '(nose pytest))
      (go :variables
          gofmt-command "goimports"
          ;; go-backend 'lsp
          ;; go-use-golangci-lint t
-         godoc-at-point-function 'godoc-gogetdoc
+         ;; godoc-at-point-function 'godoc-gogetdoc
          )
+     ycmd
      protobuf
      lua
      html
-     lsp
      rust
      (javascript :packages (not web-beautify livid-mode company-tern tern)
                  :variables
@@ -111,7 +115,7 @@ values."
       :packages (not eclim company-emacs-eclim)
       :variables
       c-basic-offset 2
-      ;; java-backend 'ensime
+      java-backend 'lsp
       )
      (elfeed :variables rmh-elfeed-org-files (list "~/Documents/feed.org"))
      (typescript :variables
@@ -147,26 +151,26 @@ values."
    dotspacemacs-frozen-packages '()
    dotspacemacs-excluded-packages
    '(
-     ;; spaceline
-     ;; anaconda-mode
-     ;; company-anaconda
-     ;; magit-gh-pulls magit-gitflow evil-mc realgud
-     ;; evil-args evil-ediff evil-exchange evil-unimpaired
-     ;; evil-indent-plus volatile-highlights smartparens
-     ;; holy-mode skewer-mode rainbow-delimiters
-     ;; highlight-indentation vi-tilde-fringe eyebrowse
-     ;; org-bullets smooth-scrolling org-repo-todo org-download org-timer
-     ;; livid-mode git-gutter git-gutter-fringe  evil-escape
-     ;; leuven-theme gh-md evil-lisp-state spray lorem-ipsum symon
-     ;; ac-ispell ace-jump-mode auto-complete auto-dictionary
-     ;; clang-format define-word google-translate disaster epic
-     ;; fancy-battery org-present orgit orglue spacemacs-theme
-     ;; helm-flyspell flyspell-correct-helm clean-aindent-mode
-     ;; helm-c-yasnippet ace-jump-helm-line helm-make magithub
-     ;; helm-themes helm-swoop helm-spacemacs-help smeargle
-     ;; ido-vertical-mode flx-ido company-quickhelp
-     ;; window-purpose spacemacs-purpose-popwin
-     ;; ivy-purpose helm-purpose
+     spaceline
+     anaconda-mode
+     company-anaconda
+     magit-gh-pulls magit-gitflow evil-mc realgud
+     evil-args evil-ediff evil-exchange evil-unimpaired
+     evil-indent-plus volatile-highlights smartparens
+     holy-mode skewer-mode rainbow-delimiters
+     highlight-indentation vi-tilde-fringe eyebrowse
+     org-bullets smooth-scrolling org-repo-todo org-download org-timer
+     livid-mode git-gutter git-gutter-fringe  evil-escape
+     leuven-theme gh-md evil-lisp-state spray lorem-ipsum symon
+     ac-ispell ace-jump-mode auto-complete auto-dictionary
+     clang-format define-word google-translate disaster epic
+     fancy-battery org-present orgit orglue spacemacs-theme
+     helm-flyspell flyspell-correct-helm clean-aindent-mode
+     helm-c-yasnippet ace-jump-helm-line helm-make magithub
+     helm-themes helm-swoop helm-spacemacs-help smeargle
+     ido-vertical-mode flx-ido company-quickhelp
+     window-purpose spacemacs-purpose-popwin
+     ivy-purpose helm-purpose
      )
    dotspacemacs-install-packages 'used-only
    dotspacemacs-delete-orphan-packages t))
@@ -235,9 +239,9 @@ values."
                          ;; doom-one-light
                          ;; atom-one-dark
                          ;; (modern-solarizedlight :location (recipe :fetcher github :repo "fuxialexander/modern-light-theme"))
+                         doom-one
                          doom-solarized-light
                          solarized-light
-                         doom-one
                          spacemacs-dark
                          spacemacs-light
                          solarized-dark)
@@ -246,10 +250,10 @@ values."
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
    ;; quickly tweak the mode-line size to make separators look not too crappy.
    dotspacemacs-default-font '("Source Code Pro"
-                               :size 13
+                               :size 12
                                :weight normal
                                :width normal
-                               :powerline-scale 1.1)
+                               :powerline-scale 1.0)
    ;; The leader key
    dotspacemacs-leader-key "SPC"
    ;; The key used for Emacs commands (M-x) (after pressing on the leader key).
@@ -472,8 +476,11 @@ values."
 
 (defun dotspacemacs/user-config ()
   (eval-after-load 'tramp '(setenv "SHELL" "/bin/bash"))
-  (setq spacemacs-default-jump-handlers
-        (remove 'evil-goto-definition spacemacs-default-jump-handlers))
+  (setq spacemacs-default-jump-handlers nil)
+        ;; (remove 'evil-goto-definition spacemacs-default-jump-handlers)
+        ;; (remove 'dump-jump-go spacemacs-default-jump-handlers)
+        ;; )
+
   (defun frtmelody-kill-buffer-or-close-window ()
     (interactive)
     (if (< 1 (length (cl-delete-duplicates (mapcar #'window-buffer (window-list)))))
@@ -483,9 +490,8 @@ values."
     )
   (evil-ex-define-cmd "q[uit]" 'frtmelody-kill-buffer-or-close-window )
 
-  ;; (setq debug-on-error t)
-  ;; (set-variable 'ycmd-server-command `("python" ,(expand-file-name "~/.vim/bundle/YouCompleteMe/third_party/ycmd/ycmd/__main__.py")))
-  ;; (set-variable 'ycmd-global-config "~/.vim/ycm_extra_conf.py")
+  (set-variable 'ycmd-server-command `("/usr/bin/python" ,(expand-file-name "~/.vim/bundle/YouCompleteMe/third_party/ycmd/ycmd/__main__.py")))
+  (set-variable 'ycmd-global-config "~/.vim/ycm_extra_conf.py")
 
   (setq ensime-startup-notification nil)
   (setq ns-use-srgb-colorspace nil)
@@ -494,9 +500,11 @@ values."
   (setq system-uses-terminfo nil)
 
   (global-hl-line-mode 1)
+  ;; disable menubar https://emacs.stackexchange.com/questions/29441/how-do-i-disable-menu-bar-mode-only-for-tty-frames
   (unless (display-graphic-p)
-    (setq linum-format (concat linum-format " "))
-    (setq linum-relative-format (concat linum-relative-format " "))
+    (menu-bar-mode -1)
+    ;; (setq linum-format (concat linum-format " "))
+    ;; (setq linum-relative-format (concat linum-relative-format " "))
     )
 
   (fset 'evil-visual-update-x-selection 'ignore)
