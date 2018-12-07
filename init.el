@@ -84,10 +84,10 @@ values."
      (chrome :packages (not edit-server gmail-message-mode))
      (org :variables org-want-todo-bindings t)
      yaml
-     ;; (lsp :variables
-     ;;      lsp-ui-sideline-enable nil
-     ;;      lsp-ui-doc-include-signature t
-     ;;      lsp-ui-remap-xref-keybindings t)
+     (lsp :variables
+          lsp-ui-sideline-enable nil
+          lsp-ui-doc-include-signature t
+          lsp-ui-remap-xref-keybindings t)
      (python :variables
              python-sort-imports-on-save t
              python-enable-yapf-format-on-save t
