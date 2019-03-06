@@ -621,11 +621,6 @@ Error out if this isn't a GitHub repo."
     (browse-url url)
     (git-messenger:popup-close)))
 
-(defun frtmelody/search-in-fireball ()
-  (interactive)
-  (helm-do-ag (expand-file-name "~/Github/fireball/")))
-
-
 (defun frtmelody/show-current-buffer-major-mode ()
   (interactive)
   (describe-variable 'major-mode))

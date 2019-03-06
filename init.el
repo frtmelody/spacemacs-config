@@ -95,9 +95,9 @@ values."
              python-test-runner '(nose pytest))
      (go :variables
          gofmt-command "goimports"
+         godoc-at-point-function 'godoc-gogetdoc
          ;; go-backend 'lsp
          ;; go-use-golangci-lint t
-         ;; godoc-at-point-function 'godoc-gogetdoc
          )
      ycmd
      protobuf
@@ -139,8 +139,10 @@ values."
             scala-auto-start-ensime t
             )
      react
-     (chinese :packages youdao-dictionary fcitx
+     (chinese :packages youdao-dictionary
+              ;; fcitx pyim
               :variables chinese-enable-fcitx t
+              chinese-enable-pyim nil
               chinese-enable-youdao-dict t))
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
@@ -475,7 +477,7 @@ values."
   )
 
 (defun dotspacemacs/user-config ()
-  (eval-after-load 'tramp '(setenv "SHELL" "/bin/bash"))
+  (eval-after-load 'tramp '(setenv "SHELL" "/bin/zsh"))
   (setq spacemacs-default-jump-handlers nil)
 
   (defun frtmelody-kill-buffer-or-close-window ()
@@ -507,13 +509,12 @@ values."
             (let ((process-connection-type nil))
               (let ((proc (start-process "pbcopy" "*Messages*" "pbcopy")))
                 (message "paste-to-osx")
-                ;; (message text)
                 (process-send-string proc text)
                 (process-send-eof proc))))
           (defun copy-from-osx ()
             (shell-command-to-string "pbpaste"))
           (setq interprogram-cut-function 'paste-to-osx)
-          (setq interprogram-paste-function 'copy-from-osx)
+          ;; (setq interprogram-paste-function 'copy-from-osx)
           )
       )
     )
