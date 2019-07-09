@@ -60,17 +60,8 @@ values."
      (auto-completion :variables auto-completion-enable-sort-by-usage t
                       auto-completion-enable-snippets-in-popup t
                       :disabled-for org markdown)
-     ;; (auto-completion :variables
-     ;;                  auto-completion-enable-sort-by-usage t
-     ;;                  auto-completion-return-key-behavior 'complete
-     ;;                  auto-completion-tab-key-behavior 'complete
-     ;;                  auto-completion-enable-snippets-in-popup t
-     ;;                  auto-completion-idle-delay 0.2
-     ;;                  auto-completion-private-snippets-directory "~/.spacemacs.d/snippets"
-     ;;                  :disabled-for org markdown
-     ;;                  )
      (osx :variables osx-dictionary-dictionary-choice "Simplified Chinese - English"
-          osx-command-as 'super)
+         osx-command-as 'super)
      ;; restclient
      (gtags :disabled-for clojure emacs-lisp javascript latex python shell-scripts)
      (shell :variables
@@ -103,7 +94,9 @@ values."
      protobuf
      lua
      html
-     rust
+     dap
+     (rust :variables rust-backend 'lsp)
+
      (javascript :packages (not web-beautify livid-mode company-tern tern)
                  :variables
                  node-add-modules-path t
@@ -115,7 +108,7 @@ values."
       :packages (not eclim company-emacs-eclim)
       :variables
       c-basic-offset 2
-      java-backend 'lsp
+      ;; java-backend 'lsp
       )
      (elfeed :variables rmh-elfeed-org-files (list "~/Documents/feed.org"))
      (typescript :variables
@@ -255,7 +248,7 @@ values."
                                :size 12
                                :weight normal
                                :width normal
-                               :powerline-scale 1.0)
+                               :powerline-scale 1.1)
    ;; The leader key
    dotspacemacs-leader-key "SPC"
    ;; The key used for Emacs commands (M-x) (after pressing on the leader key).
@@ -479,6 +472,7 @@ values."
 (defun dotspacemacs/user-config ()
   (eval-after-load 'tramp '(setenv "SHELL" "/bin/zsh"))
   (setq spacemacs-default-jump-handlers nil)
+  (setq mac-system-move-file-to-trash-use-finder nil)
 
   (defun frtmelody-kill-buffer-or-close-window ()
     (interactive)
@@ -497,6 +491,7 @@ values."
   (setq powerline-default-separator 'utf-8)
   (setq multi-term-program "/bin/zsh")
   (setq system-uses-terminfo nil)
+  (setq evil-ex-visual-char-range t)
 
   (global-hl-line-mode 1)
   ;; disable menubar https://emacs.stackexchange.com/questions/29441/how-do-i-disable-menu-bar-mode-only-for-tty-frames
@@ -508,7 +503,6 @@ values."
           (defun paste-to-osx (text &optional push)
             (let ((process-connection-type nil))
               (let ((proc (start-process "pbcopy" "*Messages*" "pbcopy")))
-                (message "paste-to-osx")
                 (process-send-string proc text)
                 (process-send-eof proc))))
           (defun copy-from-osx ()

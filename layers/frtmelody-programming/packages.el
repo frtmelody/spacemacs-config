@@ -231,6 +231,7 @@
   (use-package flycheck-package)
   (add-hook 'java-mode-hook 'flycheck-mode)
   (add-hook 'kotlin-mode-hook 'flycheck-mode)
+
   )
 
 (defun frtmelody-programming/init-lispy ()

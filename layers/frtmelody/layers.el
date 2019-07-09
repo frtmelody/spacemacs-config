@@ -15,5 +15,4 @@
                                       frtmelody-ui
                                       frtmelody-org
                                       frtmelody-better-defaults
-                                      lsp-intellij
                                       ))
