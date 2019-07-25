@@ -79,6 +79,14 @@
 (add-hook 'evil-insert-state-exit-hook
           (lambda () (frtmelody/fcitx-deactivate-proc)))
 
+;; 进入normal mode切换第一输入法（英文）
+;(add-hook 'evil-normal-state-entry-hook
+          ;(lambda () (frtmelody/fcitx-deactivate-proc)))
+
 ;; 进入insert mode自动切换中文输入法
 (add-hook 'evil-insert-state-entry-hook
           (lambda () (frtmelody/use-chinese-input)))
+
+
+
+(advice-add 'evil-force-normal-state :after#'frtmelody/fcitx-deactivate-proc)
