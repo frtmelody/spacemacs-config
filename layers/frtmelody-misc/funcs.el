@@ -743,5 +743,10 @@ Error out if this isn't a GitHub repo."
     (frtmelody/fcitx-activate-proc)))
 
 ;; 开启或关闭中文输入法
-(defun frtmelody/chinese-input-enable () (interactive) (setq frtmelody-chinese-input-on t))
+(defun frtmelody/chinese-input-enable () (interactive)
+     (setq frtmelody-chinese-input-on t)
+     (when (eq evil-state 'insert)
+       (frtmelody/fcitx-activate-proc)
+       )
+ )
 (defun frtmelody/chinese-input-disable () (interactive) (setq frtmelody-chinese-input-on nil))
