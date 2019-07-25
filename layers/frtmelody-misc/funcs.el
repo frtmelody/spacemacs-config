@@ -729,3 +729,19 @@ Error out if this isn't a GitHub repo."
                             (match-string 2 s))))
                tabs)))
   (frtmelody/chrome-switch-tab-internal window-id tab-id))
+
+
+(defun frtmelody/fcitx-activate-proc ()
+  (call-process "fcitx-remote" nil nil nil "-o"))
+
+(defun frtmelody/fcitx-deactivate-proc ()
+  (call-process "fcitx-remote" nil nil nil "-c"))
+
+;; 通过运行命令切换输入法
+(defun frtmelody/use-chinese-input ()
+  (when frtmelody-chinese-input-on
+    (frtmelody/fcitx-activate-proc)))
+
+;; 开启或关闭中文输入法
+(defun frtmelody/chinese-input-enable () (interactive) (setq frtmelody-chinese-input-on t))
+(defun frtmelody/chinese-input-disable () (interactive) (setq frtmelody-chinese-input-on nil))

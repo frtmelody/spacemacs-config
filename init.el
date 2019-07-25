@@ -75,10 +75,6 @@ values."
      (chrome :packages (not edit-server gmail-message-mode))
      (org :variables org-want-todo-bindings t)
      yaml
-     (lsp :variables
-          lsp-ui-sideline-enable nil
-          lsp-ui-doc-include-signature t
-          lsp-ui-remap-xref-keybindings t)
      (python :variables
              python-sort-imports-on-save t
              python-enable-yapf-format-on-save t
@@ -95,7 +91,7 @@ values."
      lua
      html
      dap
-     (rust :variables rust-backend 'lsp)
+     (rust :variables rust-backend 'racer)
 
      (javascript :packages (not web-beautify livid-mode company-tern tern)
                  :variables
@@ -132,10 +128,9 @@ values."
             scala-auto-start-ensime t
             )
      react
-     (chinese :packages youdao-dictionary
-              ;; fcitx pyim
-              :variables chinese-enable-fcitx t
-              chinese-enable-pyim nil
+     (chinese :packages youdao-dictionary fcitx
+              :variables
+              ;; chinese-enable-fcitx t
               chinese-enable-youdao-dict t))
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
@@ -483,13 +478,14 @@ values."
     )
   (evil-ex-define-cmd "q[uit]" 'frtmelody-kill-buffer-or-close-window )
 
+
   (set-variable 'ycmd-server-command `("/usr/bin/python" ,(expand-file-name "~/.vim/bundle/YouCompleteMe/third_party/ycmd/ycmd/__main__.py")))
   (set-variable 'ycmd-global-config "~/.vim/ycm_extra_conf.py")
 
   (setq ensime-startup-notification nil)
   (setq ns-use-srgb-colorspace nil)
   (setq powerline-default-separator 'utf-8)
-  (setq multi-term-program "/bin/zsh")
+  (setq multi-term-program "/usr/local/bin/zsh")
   (setq system-uses-terminfo nil)
   (setq evil-ex-visual-char-range t)
 

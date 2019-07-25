@@ -19,7 +19,6 @@
         cmake-font-lock
         cmake-mode
         flycheck
-        nodejs-repl
         (nodejs-repl-eval :location local)
         (ox-confluence-en :location local)
         js2-mode
@@ -29,7 +28,6 @@
         yasnippet
         web-mode
         js-doc
-        import-js
         prettier-js
         go-mode
         lua-mode
@@ -222,10 +220,6 @@
     "ti" 'my-toggle-web-indent))
 
 
-(defun frtmelody-programming/init-nodejs-repl ()
-  (use-package nodejs-repl
-    :init
-    :defer t))
 
 (defun frtmelody-programming/init-flycheck-package ()
   (use-package flycheck-package)
@@ -511,15 +505,6 @@
                           'counsel-etags-virtual-update-tags 'append 'local)))))
 
 
-
-(defun frtmelody-programming/init-import-js ()
-  (use-package import-js
-    :init
-    (progn
-      (run-import-js)
-      (spacemacs/set-leader-keys-for-major-mode 'js2-mode "i" 'import-js-import)
-      (spacemacs/set-leader-keys-for-major-mode 'rjsx-mode "i" 'import-js-import))
-    :defer t))
 
 (defun frtmelody-programming/init-lispy ()
   (use-package lispy
