@@ -5,7 +5,16 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(ahs-case-fold-search nil t)
+ '(ahs-case-fold-search nil)
+ '(browse-at-remote-remote-type-domains
+   (quote
+    (("bitbucket.org" . "bitbucket")
+     ("github.com" . "github")
+     ("gitlab.com" . "gitlab")
+     ("git.savannah.gnu.org" . "gnu")
+     ("gist.github.com" . "gist")
+     ("git.inke.cn" . "gitlab")
+     ("code.inke.cn" . "gitlab"))))
  '(command-log-mode-window-size 50)
  '(company-dabbrev-minimum-length 3)
  '(company-dabbrev-other-buffers nil)
@@ -27,7 +36,7 @@
  '(expand-region-contract-fast-key "V")
  '(expand-region-exclude-text-mode-expansions (quote (html-mode nxml-mode web-mode)))
  '(expand-region-reset-fast-key "r")
- '(fci-rule-color "#5B6268" t)
+ '(fci-rule-color "#5B6268")
  '(global-command-log-mode nil)
  '(helm-buffer-max-length 56)
  '(helm-move-to-line-cycle-in-source t)
